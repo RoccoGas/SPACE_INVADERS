@@ -2,6 +2,7 @@
 //
 
 #include <stdio.h>
+#include "allegro.h"
 
 int main(){
     if (!initialize_allegro()) {

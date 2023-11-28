@@ -27,4 +27,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\sprites\enemy1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\sprites\enemy1handsup.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\sprites\jellyfish.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\sprites\squid.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

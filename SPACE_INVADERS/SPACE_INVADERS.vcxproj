@@ -145,6 +145,12 @@
   <ItemGroup>
     <ClInclude Include="allegro.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\sprites\enemy1.png" />
+    <Image Include="..\sprites\enemy1handsup.png" />
+    <Image Include="..\sprites\jellyfish.png" />
+    <Image Include="..\sprites\squid.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
