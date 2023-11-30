@@ -26,9 +26,9 @@ enum ERROR_OPTIONS_E start_menu() {
     ALLEGRO_MOUSE_STATE mouseState;
 
     const char* bitmapBackgroundFilepath = "assets/menu/space_invaders_logo.png";
-    const char* bitmapSpaceFilepath = "assets/menu/8bit_space.jpg";
+    const char* bitmapSpaceFilepath = "assets/menu/space3.jpg";
     const char* fontFilepath = "assets/menu/space_invaders_font.ttf";
-    const char* menuMusicSampleFilenpath = "assets/menu/sweet_mystery_galaxy.wav";
+    const char* menuMusicSampleFilenpath = "assets/menu/Cirno_Fortress_Stage_1.wav";
 
     //------------------ chequeo rrores de inicializacion de  Allegro ----------------------//
 
