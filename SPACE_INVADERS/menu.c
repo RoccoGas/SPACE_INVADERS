@@ -119,12 +119,6 @@ enum ERROR_OPTIONS_E start_menu() {
                 DISPLAY_HEIGHT / 3,
                 ALLEGRO_ALIGN_CENTER,
                 "SPACE INVADERS!");*/
-            al_draw_text(font,
-                WHITE,
-                DISPLAY_WIDTH / 2,
-                DISPLAY_HEIGHT / 2,
-                ALLEGRO_ALIGN_CENTER,
-                "Start");
             if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) &&
                 (mouseState.y > 0.5f * DISPLAY_HEIGHT) && (mouseState.y < (0.6f * DISPLAY_HEIGHT))) {
                 al_draw_text(font,
@@ -134,18 +128,29 @@ enum ERROR_OPTIONS_E start_menu() {
                     ALLEGRO_ALIGN_CENTER,
                     "Start");
             }
-            al_draw_text(font,
-                WHITE,
-                0.5 * DISPLAY_WIDTH,
-                0.75 * DISPLAY_HEIGHT,
-                ALLEGRO_ALIGN_CENTER,
-                "Quit");
+            else {
+
+                al_draw_text(font,
+                    WHITE,
+                    DISPLAY_WIDTH / 2,
+                    DISPLAY_HEIGHT / 2,
+                    ALLEGRO_ALIGN_CENTER,
+                    "Start");
+            }
             if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
                 (mouseState.y > 0.75f * DISPLAY_HEIGHT) && (mouseState.y < (0.85f * DISPLAY_HEIGHT))) {
                 al_draw_text(font,
                     RED,
                     DISPLAY_WIDTH / 2,
                     0.75f * DISPLAY_HEIGHT,
+                    ALLEGRO_ALIGN_CENTER,
+                    "Quit");
+            }
+            else {
+                al_draw_text(font,
+                    WHITE,
+                    0.5 * DISPLAY_WIDTH,
+                    0.75 * DISPLAY_HEIGHT,
                     ALLEGRO_ALIGN_CENTER,
                     "Quit");
             }
