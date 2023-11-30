@@ -141,9 +141,12 @@
   <ItemGroup>
     <ClCompile Include="allegro.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="menu.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="allegro.h" />
+    <ClInclude Include="header.h" />
+    <ClInclude Include="menu.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\sprites\enemy1.png" />

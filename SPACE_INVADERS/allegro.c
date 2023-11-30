@@ -5,30 +5,30 @@
 bool initialize_allegro() {                      //Funcion que inicializa todo allegro. No recibe nada. Devuelve un true si esta todo ok, false si hay error.
 
     if (!al_init()) {
-        fprintf(stderr, "Failed to initialize Allegro!");
+        fprintf(stdout, "Failed to initialize Allegro!");
         return false;
     }
 
     if (!al_init_image_addon()) {       // ADDON necesario para manejo de imagenes 
-        fprintf(stderr, "Failed to initialize image addon!");
+        fprintf(stdout, "Failed to initialize image addon!");
         return false;
     }
 
     if (!al_init_font_addon()) {        // ADDON necesario para manejo de fuentes 
-        fprintf(stderr, "Failed to initialize font addon!");
+        fprintf(stdout, "Failed to initialize font addon!");
         al_shutdown_image_addon();
         return false;
     }
 
     if (!al_init_primitives_addon()) {   // ADDON necesario para manejo de formas
-        fprintf(stderr, "Failed to initialize primitives addon!");
+        fprintf(stdout, "Failed to initialize primitives addon!");
         al_shutdown_image_addon();
         al_shutdown_font_addon();
         return false;
     }
 
     if (!al_init_ttf_addon()) {        // ADDON necesario para manejo de fuentes 
-        fprintf(stderr, "Failed to initialize ttf addon!");
+        fprintf(stdout, "Failed to initialize ttf addon!");
         al_shutdown_image_addon();
         al_shutdown_font_addon();
         al_shutdown_primitives_addon();
@@ -36,7 +36,7 @@ bool initialize_allegro() {                      //Funcion que inicializa todo a
     }
 
     if (!al_install_audio()) {
-        fprintf(stderr, "Failed to install audio!");
+        fprintf(stdout, "Failed to install audio!");
         al_shutdown_image_addon();
         al_shutdown_font_addon();
         al_shutdown_primitives_addon();
@@ -45,7 +45,7 @@ bool initialize_allegro() {                      //Funcion que inicializa todo a
     }
 
     if (!al_init_acodec_addon()) {
-        fprintf(stderr, "Failed to initialize acodec addon!");
+        fprintf(stdout, "Failed to initialize acodec addon!");
         al_shutdown_image_addon();
         al_shutdown_font_addon();
         al_shutdown_primitives_addon();
@@ -55,7 +55,7 @@ bool initialize_allegro() {                      //Funcion que inicializa todo a
     }
 
     if (!al_install_keyboard()) {
-        fprintf(stderr, "Failed to install keyboard!");
+        fprintf(stdout, "Failed to install keyboard!");
         al_shutdown_image_addon();
         al_shutdown_font_addon();
         al_shutdown_primitives_addon();
@@ -65,7 +65,7 @@ bool initialize_allegro() {                      //Funcion que inicializa todo a
     }
 
     if (!al_install_mouse()) {
-        fprintf(stderr, "Failed to install mouse!");
+        fprintf(stdout, "Failed to install mouse!");
         al_shutdown_image_addon();
         al_shutdown_font_addon();
         al_shutdown_primitives_addon();
