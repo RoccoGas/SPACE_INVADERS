@@ -57,7 +57,7 @@ enum ERROR_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
 
     menuMusic = al_create_sample_instance(menuMusicSample);
 
-    display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+
     if (display == NULL) {
         fprintf(stdout, "Failed to create menu display of width %u and height %u\n ", DISPLAY_WIDTH, DISPLAY_HEIGHT);
         return BAD_DISPLAY;
@@ -189,7 +189,6 @@ enum ERROR_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
 
     al_destroy_bitmap(bitmapBackround);
     al_destroy_bitmap(bitmapSpace);
-    al_destroy_display(display);
     al_destroy_font(font);
     al_destroy_sample(menuMusicSample);
     al_destroy_sample_instance(menuMusic);

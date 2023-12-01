@@ -18,6 +18,7 @@ typedef struct{
 	float x;
 	unsigned int score;
 	unsigned int lives;
+	ALLEGRO_BITMAP* bitmap;
 } playerStatus;
 
 typedef struct {
