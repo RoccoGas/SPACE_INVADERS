@@ -9,6 +9,8 @@
 
 enemyStatus enemies[LEVEL_ONE_ENEMY_AMOUNT];
 
+void draw_heads_up_display(player);
+
 enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
     printf("[LEVEL ONE]\n");
 
@@ -27,7 +29,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
     ALLEGRO_MOUSE_STATE mouseState;
 
     const char* fontFilepath = "assets/menu/space_invaders_font.ttf";
-    const char* levelOneMusicSampleFilenpath = "assets/menu/Cirno_Fortress_Stage_1.wav";
+    //const char* levelOneMusicSampleFilenpath = "assets/menu/Cirno_Fortress_Stage_1.wav";
 
     //------------------ chequeo rrores de inicializacion de  Allegro ----------------------//
 
@@ -39,7 +41,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
         fprintf(stdout, "Failed to load: %s\n", fontFilepath);
         return BAD_ASSET;
     }
-
+    /*
     levelOneMusicSample = al_load_sample(levelOneMusicSampleFilenpath);
     if (levelOneMusicSample == NULL) {
         fprintf(stdout, "Failed to load: %s\n", levelOneMusicSampleFilenpath);
@@ -47,7 +49,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
     }
 
     levelOneMusic = al_create_sample_instance(levelOneMusicSample);
-
+    */
     if (display == NULL) {
         fprintf(stdout, "Failed to create menu display of width %u and height %u\n ", DISPLAY_WIDTH, DISPLAY_HEIGHT);
         return BAD_DISPLAY;
@@ -76,9 +78,9 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
 
     al_set_window_title(display, "SPACE INVADERS!");
 
-    al_attach_sample_instance_to_mixer(levelOneMusic, al_get_default_mixer());
+   /* al_attach_sample_instance_to_mixer(levelOneMusic, al_get_default_mixer());
     al_set_sample_instance_playmode(levelOneMusic, ALLEGRO_PLAYMODE_LOOP);
-    al_play_sample_instance(levelOneMusic);
+    al_play_sample_instance(levelOneMusic);*/
 
 
     //-------------------------- Game loop del menu ---------------------------//
@@ -97,7 +99,8 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
             levelOneOption = QUIT_GAME;
             break;
         case ALLEGRO_EVENT_TIMER:
-            al_draw_filled_rectangle(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, BLACK);
+            al_draw_filled_rectangle(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, BLACK2);
+
             al_flip_display();
             break;
         case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
@@ -130,13 +133,13 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
 
     }
 
-    al_stop_sample_instance(levelOneMusic);
+    //al_stop_sample_instance(levelOneMusic);
 
 
     al_destroy_display(display);
     al_destroy_font(font);
-    al_destroy_sample(levelOneMusicSample);
-    al_destroy_sample_instance(levelOneMusic);
+    //al_destroy_sample(levelOneMusicSample);
+    //al_destroy_sample_instance(levelOneMusic);
     al_destroy_event_queue(queue);
     al_destroy_timer(timer);
 
