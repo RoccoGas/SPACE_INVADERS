@@ -10,4 +10,12 @@ enum ERROR_OPTIONS_E { NO_ERROR_START_GAME, RESUME_GAME, QUIT_GAME, QUIT_TO_MENU
 
 #define TIMER_FPS(n)	(1.0/n)
 
+#define PLAYER_Y 20
+
+typedef struct{
+	float x;
+	unsigned int score;
+	unsigned int lives;
+} playerStatus;
+
 #endif // !__HEADER__
