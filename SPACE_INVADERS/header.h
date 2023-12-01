@@ -1,6 +1,8 @@
 #ifndef __HEADER__
 #define __HEADER__
 
+#include "allegro.h"
+
 enum ERROR_OPTIONS_E { NO_ERROR_START_GAME, RESUME_GAME, QUIT_GAME, QUIT_TO_MENU, BAD_ASSET, BAD_DISPLAY, BAD_QUEUE, BAD_TIMER };
 
 #define DISPLAY_WIDTH 1280
@@ -17,5 +19,12 @@ typedef struct{
 	unsigned int score;
 	unsigned int lives;
 } playerStatus;
+
+typedef struct {
+	float x;
+	float y;
+	ALLEGRO_BITMAP* bitmap;
+
+}	enemyStatus;
 
 #endif // !__HEADER__

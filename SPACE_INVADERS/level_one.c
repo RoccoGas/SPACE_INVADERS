@@ -5,16 +5,19 @@
 
 #include <stdio.h>
 
+#define LEVEL_ONE_ENEMY_AMOUNT 30
+
+enemyStatus enemies[LEVEL_ONE_ENEMY_AMOUNT];
+
 enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
     printf("[LEVEL ONE]\n");
 
     al_reserve_samples(1); // Para la musica del menu
 
-    ALLEGRO_BITMAP* bitmapBackround;
     ALLEGRO_BITMAP* bitmapSpace;
     ALLEGRO_FONT* font;
-    ALLEGRO_SAMPLE* menuMusicSample;
-    ALLEGRO_SAMPLE_INSTANCE* menuMusic;
+    ALLEGRO_SAMPLE* levelOneMusicSample;
+    ALLEGRO_SAMPLE_INSTANCE* levelOneMusic;
 
 
     ALLEGRO_EVENT_QUEUE* queue;
@@ -27,15 +30,11 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
     const char* bitmapBackgroundFilepath = "assets/menu/space_invader_logo.png";
     const char* bitmapSpaceFilepath = "assets/menu/space3.jpg";
     const char* fontFilepath = "assets/menu/space_invaders_font.ttf";
-    const char* menuMusicSampleFilenpath = "assets/menu/Cirno_Fortress_Stage_1.wav";
+    const char* levelOneMusicSampleFilenpath = "assets/menu/Cirno_Fortress_Stage_1.wav";
 
     //------------------ chequeo rrores de inicializacion de  Allegro ----------------------//
 
-    bitmapBackround = al_load_bitmap(bitmapBackgroundFilepath);
-    if (bitmapBackround == NULL) {
-        fprintf(stdout, "Failed to load: %s\n", bitmapBackgroundFilepath);
-        return BAD_ASSET;
-    }
+   
 
     bitmapSpace = al_load_bitmap(bitmapSpaceFilepath);
     if (bitmapSpace == NULL) {
@@ -49,13 +48,13 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
         return BAD_ASSET;
     }
 
-    menuMusicSample = al_load_sample(menuMusicSampleFilenpath);
-    if (menuMusicSample == NULL) {
-        fprintf(stdout, "Failed to load: %s\n", menuMusicSampleFilenpath);
+    levelOneMusicSample = al_load_sample(levelOneMusicSampleFilenpath);
+    if (levelOneMusicSample == NULL) {
+        fprintf(stdout, "Failed to load: %s\n", levelOneMusicSampleFilenpath);
         return BAD_ASSET;
     }
 
-    menuMusic = al_create_sample_instance(menuMusicSample);
+    levelOneMusic = al_create_sample_instance(levelOneMusicSample);
 
     display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
     if (display == NULL) {
@@ -86,9 +85,9 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
 
     al_set_window_title(display, "SPACE INVADERS!");
 
-    al_attach_sample_instance_to_mixer(menuMusic, al_get_default_mixer());
-    al_set_sample_instance_playmode(menuMusic, ALLEGRO_PLAYMODE_LOOP);
-    al_play_sample_instance(menuMusic);
+    al_attach_sample_instance_to_mixer(levelOneMusic, al_get_default_mixer());
+    al_set_sample_instance_playmode(levelOneMusic, ALLEGRO_PLAYMODE_LOOP);
+    al_play_sample_instance(levelOneMusic);
 
 
     //-------------------------- Game loop del menu ---------------------------//
@@ -185,14 +184,14 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
 
     }
 
-    al_stop_sample_instance(menuMusic);
+    al_stop_sample_instance(levelOneMusic);
 
     al_destroy_bitmap(bitmapBackround);
     al_destroy_bitmap(bitmapSpace);
     al_destroy_display(display);
     al_destroy_font(font);
-    al_destroy_sample(menuMusicSample);
-    al_destroy_sample_instance(menuMusic);
+    al_destroy_sample(levelOneMusicSample);
+    al_destroy_sample_instance(levelOneMusic);
     al_destroy_event_queue(queue);
     al_destroy_timer(timer);
 
