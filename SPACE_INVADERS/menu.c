@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 
-enum ERROR_OPTIONS_E start_menu() {
+enum ERROR_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
     printf("[START MENU]\n");
 
     al_reserve_samples(1); // Para la musica del menu
@@ -17,7 +17,6 @@ enum ERROR_OPTIONS_E start_menu() {
     ALLEGRO_SAMPLE_INSTANCE* menuMusic;
 
 
-    ALLEGRO_DISPLAY* display;
     ALLEGRO_EVENT_QUEUE* queue;
     ALLEGRO_TIMER* timer;
 
