@@ -6,15 +6,10 @@
 #include "allegro.h"
 #include "menu.h"
 
-int main(){
-    if (!initialize_allegro()) {
-        printf("Unable to start because allegro was not properly initialized...");
-        return -1;
-    }
-    start_menu();
+playerStatus player;
 
-    destroy_allegro();
-    return 0;
+int main(){
+	if
 }
 
 
