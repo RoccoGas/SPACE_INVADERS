@@ -30,6 +30,9 @@
     <ClCompile Include="initialize.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="pruebamov.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="allegro.h">
