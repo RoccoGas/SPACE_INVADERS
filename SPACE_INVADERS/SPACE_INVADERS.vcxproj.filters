@@ -30,7 +30,7 @@
     <ClCompile Include="initialize.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="playerMovementTest.c">
+    <ClCompile Include="enemyMovement.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -45,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="initialize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="movement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -17,3 +17,15 @@ bool init_player(playerStatus* player) {
     return true;
 
 }
+
+
+bool init_enemy(enemyStatus* enemy, const char* enemyTypeFile){
+    enemy->x = 0;
+    enemy->y = 0;
+    enemy->bitmap = al_load_bitmap(enemyTypeFile);
+    if (enemy->bitmap == NULL){
+        fprintf(stdout, "Failed to load enemy bitmap\n");
+        return false;
+    }
+    return true;
+}

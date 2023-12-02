@@ -151,17 +151,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="allegro.c" />
+    <ClCompile Include="enemyMovement.c" />
     <ClCompile Include="initialize.c" />
     <ClCompile Include="level_one.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="menu.c" />
-    <ClCompile Include="playerMovementTest.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="allegro.h" />
     <ClInclude Include="header.h" />
     <ClInclude Include="initialize.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="movement.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\sprites\enemy1.png" />

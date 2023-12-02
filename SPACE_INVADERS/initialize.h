@@ -4,6 +4,7 @@
 #include "header.h"
 
 bool init_player(playerStatus* player);
+bool init_enemy(enemyStatus* enemy, const char* enemyTypeFile);
 
 
 #endif
