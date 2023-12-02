@@ -17,6 +17,10 @@ int main(){
 
     ALLEGRO_DISPLAY* display;
     display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+    if (display == NULL) {
+        fprintf(stdout, "Failed to create display\n");
+        return false;
+    }
 
     playerStatus player;
     if (!init_player(&player)) {
@@ -24,7 +28,7 @@ int main(){
     }
 
 
-    start_menu(display);
+    //start_menu(display);
     level_one(display, player);
 
 

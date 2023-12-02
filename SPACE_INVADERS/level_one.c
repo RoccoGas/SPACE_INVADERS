@@ -61,7 +61,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
         return BAD_QUEUE;
     }
 
-    timer = al_create_timer(TIMER_FPS(MENU_FPS));
+    timer = al_create_timer(TIMER_FPS(60));
     if (timer == NULL) {
         fprintf(stdout, "Failed to create menu timer of %u FPS\n", MENU_FPS);
         return BAD_TIMER;
@@ -99,22 +99,11 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
             levelOneOption = QUIT_GAME;
             break;
         case ALLEGRO_EVENT_TIMER:
-            al_draw_filled_rectangle(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, BLACK2);
-
+            al_clear_to_color(BLACK2);
+            al_draw_bitmap(player->bitmap, player->x, PLAYERY, 0);
             al_flip_display();
             break;
-        case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-            if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) &&
-                (mouseState.y > 0.5f * DISPLAY_HEIGHT) && (mouseState.y < (0.6f * DISPLAY_HEIGHT))) {
-                levelOneOption = NO_ERROR_START_GAME;
-                levelOneLoop = false;
-            }
-            else if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
-                (mouseState.y > 0.75f * DISPLAY_HEIGHT) && (mouseState.y < (0.85f * DISPLAY_HEIGHT))) {
-                levelOneOption = QUIT_GAME;
-                levelOneLoop = false;
-            }
-            break;
+        
         case ALLEGRO_EVENT_KEY_DOWN:
             switch (event.keyboard.keycode) {
             case ALLEGRO_KEY_Q:
@@ -122,13 +111,19 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
                 levelOneOption = QUIT_GAME;
                 levelOneLoop = false;
                 break;
-            case ALLEGRO_KEY_S:
-                levelOneOption = NO_ERROR_START_GAME;
-                levelOneLoop = false;
+            default:
                 break;
             }
-        default:
-            break;
+            if (al_key_down(&keyboardState, ALLEGRO_KEY_RIGHT)) {
+                if ((player->x + SPACESHIP_SIZE) < DISPLAY_WIDTH) {
+                    player->x += 5;
+                }
+            }
+            else if (al_key_down(&keyboardState, ALLEGRO_KEY_LEFT)) {
+                if (player->x > 0) {
+                    player->x -= 5;
+                }
+            }
         }
 
     }

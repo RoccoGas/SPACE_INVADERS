@@ -30,7 +30,7 @@
     <ClCompile Include="initialize.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pruebamov.c">
+    <ClCompile Include="playerMovementTest.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

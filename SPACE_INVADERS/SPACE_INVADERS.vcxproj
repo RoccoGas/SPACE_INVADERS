@@ -155,7 +155,7 @@
     <ClCompile Include="level_one.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="menu.c" />
-    <ClCompile Include="pruebamov.c" />
+    <ClCompile Include="playerMovementTest.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="allegro.h" />
