@@ -2,7 +2,6 @@
 ////lo hice asi porque tenia miedo cagar algo del posta, dsp habria que unirlo
 //
 //#include <stdio.h>
-//#include <Windows.h>
 //#include <assert.h>
 //#include <allegro5\allegro.h>
 //#include <allegro5/allegro_image.h>
