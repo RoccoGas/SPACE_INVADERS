@@ -3,6 +3,6 @@
 
 #include "allegro.h"
 #include "header.h"
-void enemyMovement(unsigned int enemyAmount, ALLEGRO_BITMAP* enemyBitmap, unsigned int* enemyX, unsigned int* enemyY, unsigned int* enemyDirection, unsigned int* downFlag);
+void enemyMovement(unsigned int enemyID, unsigned int firstEnemyID, unsigned int lastEnemyID, ALLEGRO_BITMAP* enemyBitmap, unsigned int* enemyX, unsigned int* enemyY, unsigned int* enemyDirection, unsigned int* downFlag);
 
 #endif //__MOVEMENT__

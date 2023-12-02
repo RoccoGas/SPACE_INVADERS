@@ -8,7 +8,7 @@
 #include "initialize.h"
 #include <Windows.h>
 
-#define LEVEL_ONE_ENEMY_AMOUNT 30
+#define LEVEL_ONE_ENEMY_AMOUNT 5
 
 enemyStatus enemies[LEVEL_ONE_ENEMY_AMOUNT];
 
@@ -32,18 +32,39 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
     ALLEGRO_KEYBOARD_STATE keyboardState;
 
     enemyStatus enemy; //despues va a ser un vector esto
+    int i;
+    unsigned int auxEnemyX[LEVEL_ONE_ENEMY_AMOUNT] = { 0 };
+    unsigned int offset = 0;
+    unsigned int firstEnemyID = 0;
+    unsigned int lastEnemyID = LEVEL_ONE_ENEMY_AMOUNT -1;
+
+    
     if (!init_enemy(&enemy, "sprites/enemy1f.png")) {
         printf("Failed to initialize enemy\n");
     }
 
 
+    for (i = 0; i < LEVEL_ONE_ENEMY_AMOUNT; i++) {
+        if (!init_enemy(&enemies[i], "sprites/enemy1f.png")) {
+            printf("Failed to initialize enemy %d\n", i);
+        }
+
+        auxEnemyX[i] = enemies[i].x + offset; //offset es para que no spawneen uno arriba de otro
+        printf("Enemy %d X: %d", i, auxEnemyX[i]);
+        offset += 60;
+    }
+
+            
+  
+
+//------------------------------------------ variables auxiliares para el gameloop ------------------------------------//
 
     unsigned int x = player->x;  //si en el gameloop se entra en cada ciclo al struct player y/o enemy, y se usa la macro BLACK2 se ralentiza todo CONSIDERABLEMENTE, hace mucho de mas
     ALLEGRO_COLOR black2 = BLACK2;
     ALLEGRO_BITMAP* bitmap = player->bitmap;
     ALLEGRO_BITMAP* enemyBitmap = enemy.bitmap;
-    unsigned int enemyX = enemy.x;
-    unsigned int enemyY = enemy.y;
+    //unsigned int enemyX = enemy.x;
+    unsigned int enemyY = enemy.y; //deberian mantener todos la misma Y
 
     unsigned int enemyDirection = DEFAULT_ENEMY_DIRECTION;
     unsigned int downFlag = 1; //activada en un principio para que no se vaya para abajo al comienzo del nivel
@@ -115,8 +136,14 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
        
 
         if (event.type == ALLEGRO_EVENT_TIMER) {
+            i = 0;
             al_clear_to_color(black2);
-            enemyMovement(1, enemyBitmap, &enemyX, &enemyY, &enemyDirection, &downFlag);
+            //enemyMovement(1, enemyBitmap, &enemyX, &enemyY, &enemyDirection, &downFlag);
+            for (i = 0; i < LEVEL_ONE_ENEMY_AMOUNT; i++) {
+                enemyMovement(i, firstEnemyID, lastEnemyID, enemyBitmap, &auxEnemyX[i], &enemyY, &enemyDirection, &downFlag);
+                printf("x%d: %d\n", i, auxEnemyX[i]);
+            }
+
             al_draw_bitmap(bitmap, x, PLAYERY, 0);
             al_flip_display();
         }
