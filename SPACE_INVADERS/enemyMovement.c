@@ -45,27 +45,21 @@ void enemy_movement_1(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int 
 		for (j = 0; j < LEVEL1_COLS; j++) {
 
 
-			if ((enemy[i][j].x + ENEMY_WIDTH) >= DISPLAY_WIDTH && *downFlag == 0) { //todos los sprites de los enemigos tienen el mismo tamaño (o al menos el ancho, arreglar que hacemos)
+			if ((mostRightEnemy->x + ENEMY_WIDTH) >= DISPLAY_WIDTH && *downFlag == 0) { //todos los sprites de los enemigos tienen el mismo tamaño (o al menos el ancho, arreglar que hacemos)
 				update_enemy_y(enemy);
 				*enemyDirection = ENEMY_DIRECTION_LEFT;
-
-				if((&enemy[i][j] == mostRightEnemy) && *downFlag == 0)
-					*downFlag = 1;
-
+				*downFlag = 1;
 			}
 			
-			else if (enemy[i][j].x <= 0 && *downFlag == 0) {
+			else if (mostLeftEnemy->x <= 0 && *downFlag == 0) {
 				update_enemy_y(enemy);
 				*enemyDirection = ENEMY_DIRECTION_RIGHT;
-
-				if ((&enemy[i][j] == mostLeftEnemy) && *downFlag == 0)
 				*downFlag = 1;
 			}
 
 			else if (*enemyDirection == ENEMY_DIRECTION_RIGHT) {
 				enemy[i][j].x += 5;
 				*downFlag = 0;
-
 			}
 
 			else if (*enemyDirection == ENEMY_DIRECTION_LEFT) {
