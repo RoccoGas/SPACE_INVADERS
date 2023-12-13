@@ -41,8 +41,8 @@ void enemy_movement_1(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int 
 	//downFlag es 1 si fue hacia abajo, 0 si no
 	//los 3 primeros argumentos los tuve que poner para que se muevan muchos enemigos bien, y para q cuando los maten que en el nivel se cambie cual es el "borde" de la matriz de enemigos
 
-	for (i = 0; i < LEVEL1_ROWS; i++) {
-		for (j = 0; j < LEVEL1_COLS; j++) {
+	//for (i = 0; i < LEVEL1_ROWS; i++) {
+		//for (j = 0; j < LEVEL1_COLS; j++) {
 
 
 			if ((mostRightEnemy->x + ENEMY_WIDTH) >= DISPLAY_WIDTH && *downFlag == 0) { //todos los sprites de los enemigos tienen el mismo tamaño (o al menos el ancho, arreglar que hacemos)
@@ -51,28 +51,55 @@ void enemy_movement_1(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int 
 				*downFlag = 1;
 			}
 			
-			else if (mostLeftEnemy->x <= 0 && *downFlag == 0) {
+			else if (mostLeftEnemy->x <= 0 && *downFlag == 0) {                            
 				update_enemy_y(enemy);
 				*enemyDirection = ENEMY_DIRECTION_RIGHT;
 				*downFlag = 1;
 			}
 
 			else if (*enemyDirection == ENEMY_DIRECTION_RIGHT) {
-				enemy[i][j].x += 5;
+				update_enemy_x(enemy, *enemyDirection);
+
+				//if (&enemy[i][j] == mostRightEnemy) {
 				*downFlag = 0;
+				//}
+			
 			}
 
 			else if (*enemyDirection == ENEMY_DIRECTION_LEFT) {
-				enemy[i][j].x -= 5;
-				*downFlag = 0;
+				update_enemy_x(enemy, *enemyDirection);
+
+
+				//if (&enemy[i][j] == mostRightEnemy) {
+					*downFlag = 0;
+				//}
 
 			}
 
 
-		}
-	}
+	//	}
+	//}
 
 }
+
+
+void update_enemy_x(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int enemyDirection) {
+	int i, j;
+
+	for (i = 0; i < LEVEL1_ROWS; i++) {
+		for (j = 0; j < LEVEL1_COLS; j++) {
+
+			if (enemyDirection == ENEMY_DIRECTION_RIGHT) {
+				enemy[i][j].x += 5;
+			}
+
+			else if (enemyDirection == ENEMY_DIRECTION_LEFT) {
+				enemy[i][j].x -= 5;
+			}
+
+		}
+	}
+	}
 
 
 void update_enemy_y(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
@@ -83,6 +110,7 @@ void update_enemy_y(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
 			enemy[i][j].y += 20;
 		}
 	}
+	printf("update enemyY\n");
 }
 
 void draw_all_enemies(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
