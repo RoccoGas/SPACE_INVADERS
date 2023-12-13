@@ -35,7 +35,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
     unsigned int enemyDirection = DEFAULT_ENEMY_DIRECTION;
     unsigned int downFlag = 1; //para que no se vaya para abajo al principio
     enemyStatus* mostLeftEnemy = &enemy[0][0];
-    enemyStatus* mostRightEnemy = &enemy[LEVEL1_COLS - 1][0];
+    enemyStatus* mostRightEnemy = &enemy[0][LEVEL1_COLS - 1];
    
 
     //const char* levelOneMusicSampleFilenpath = "assets/menu/Cirno_Fortress_Stage_1.wav";

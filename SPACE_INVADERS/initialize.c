@@ -40,8 +40,8 @@ bool init_all_enemies1(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], const char* 
                 return false;
             }
 
-            enemy[i][j].x += INITIAL_X_OFFSET * i;
-            enemy[i][j].y += INITIAL_Y_OFFSET * j;
+            enemy[i][j].x += INITIAL_X_OFFSET * j;
+            enemy[i][j].y += INITIAL_Y_OFFSET * i;
         }
     }
     return true;
