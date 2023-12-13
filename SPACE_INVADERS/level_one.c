@@ -33,6 +33,9 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
     init_all_enemies1(enemy, ENEMY1_FILE_PATH);
 
     unsigned int enemyDirection = DEFAULT_ENEMY_DIRECTION;
+    unsigned int downFlag = 1; //para que no se vaya para abajo al principio
+    enemyStatus* mostLeftEnemy = &enemy[0][0];
+    enemyStatus* mostRightEnemy = &enemy[0][LEVEL1_COLS - 1];
    
 
     //const char* levelOneMusicSampleFilenpath = "assets/menu/Cirno_Fortress_Stage_1.wav";
@@ -103,7 +106,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
 
         if (event.type == ALLEGRO_EVENT_TIMER) {
             al_clear_to_color(BLACK2);
-            enemy_movement_1(enemy, &enemyDirection);
+            enemy_movement_1(enemy, &enemyDirection, &downFlag, mostLeftEnemy, mostRightEnemy);
 
             al_draw_bitmap(player->bitmap, player->x, PLAYERY, 0);
             draw_all_enemies(enemy);

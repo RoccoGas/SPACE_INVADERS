@@ -36,7 +36,7 @@ void enemyMovement(unsigned int enemyID, unsigned int firstEnemyID, unsigned int
 
 }
 
-void enemy_movement_1(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int * enemyDirection) { //se usa en ciclos, conviene tener bitmap como parametro
+void enemy_movement_1(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int * enemyDirection, unsigned int* downFlag, enemyStatus* mostLeftEnemy, enemyStatus* mostRightEnemy) { //se usa en ciclos, conviene tener bitmap como parametro
 	int i, j;
 	//downFlag es 1 si fue hacia abajo, 0 si no
 	//los 3 primeros argumentos los tuve que poner para que se muevan muchos enemigos bien, y para q cuando los maten que en el nivel se cambie cual es el "borde" de la matriz de enemigos
@@ -45,22 +45,32 @@ void enemy_movement_1(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int 
 		for (j = 0; j < LEVEL1_COLS; j++) {
 
 
-			if ((enemy[i][j].x + ENEMY_WIDTH) >= DISPLAY_WIDTH) { //todos los sprites de los enemigos tienen el mismo tamaño (o al menos el ancho, arreglar que hacemos)
+			if ((enemy[i][j].x + ENEMY_WIDTH) >= DISPLAY_WIDTH && *downFlag == 0) { //todos los sprites de los enemigos tienen el mismo tamaño (o al menos el ancho, arreglar que hacemos)
 				update_enemy_y(enemy);
 				*enemyDirection = ENEMY_DIRECTION_LEFT;
+
+				if((&enemy[i][j] == mostRightEnemy) && *downFlag == 0)
+					*downFlag = 1;
+
 			}
 			
-			else if (enemy[i][j].x <= 0) {
+			else if (enemy[i][j].x <= 0 && *downFlag == 0) {
 				update_enemy_y(enemy);
 				*enemyDirection = ENEMY_DIRECTION_RIGHT;
+
+				if ((&enemy[i][j] == mostLeftEnemy) && *downFlag == 0)
+				*downFlag = 1;
 			}
 
 			else if (*enemyDirection == ENEMY_DIRECTION_RIGHT) {
 				enemy[i][j].x += 5;
+				*downFlag = 0;
+
 			}
 
 			else if (*enemyDirection == ENEMY_DIRECTION_LEFT) {
 				enemy[i][j].x -= 5;
+				*downFlag = 0;
 
 			}
 
@@ -90,4 +100,3 @@ void draw_all_enemies(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
 		}
 	}
 }
-
