@@ -3,6 +3,9 @@
 
 #include "allegro.h"
 #include "header.h"
-void enemyMovement(unsigned int enemyID, unsigned int firstEnemyID, unsigned int lastEnemyID, ALLEGRO_BITMAP* enemyBitmap, unsigned int* enemyX, unsigned int* enemyY, unsigned int* enemyDirection, unsigned int* downFlag);
+
+void draw_all_enemies(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]);
+void update_enemy_y(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]);
+void enemy_movement_1(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int* enemyDirection);
 
 #endif //__MOVEMENT__
