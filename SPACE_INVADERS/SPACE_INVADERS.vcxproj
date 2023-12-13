@@ -151,7 +151,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="allegro.c" />
-    <ClCompile Include="enemyMovement.c" />
+    <ClCompile Include="movement.c" />
     <ClCompile Include="initialize.c" />
     <ClCompile Include="level_one.c" />
     <ClCompile Include="main.c" />

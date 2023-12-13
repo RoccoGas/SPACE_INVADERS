@@ -28,8 +28,10 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
     ALLEGRO_KEYBOARD_STATE keyboardState;
 
     enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]; //despues va a ser un vector esto
+    laser_t laser;
 
 
+    laser.moving = false; 
     init_all_enemies1(enemy, ENEMY1_FILE_PATH);
 
     unsigned int enemyDirection = DEFAULT_ENEMY_DIRECTION;
@@ -109,7 +111,8 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
             enemy_movement_1(enemy, &enemyDirection, &downFlag, mostLeftEnemy, mostRightEnemy);
 
             al_draw_bitmap(player->bitmap, player->x, PLAYERY, 0);
-            draw_all_enemies(enemy);
+            //draw_all_enemies(enemy);
+            
             al_flip_display();
             printf("most right: %f\n", mostRightEnemy->x);
             printf("most left: %f\n", mostLeftEnemy->x);
