@@ -102,20 +102,20 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
                 player->x -= 5;
             }
         }
-
+        else if (al_key_down(&keyboardState, ALLEGRO_KEY_SPACE)) {
+            shoot_laser(player, &laser);
+        }
         al_wait_for_event(queue, &event);
        
 
         if (event.type == ALLEGRO_EVENT_TIMER) {
             al_clear_to_color(BLACK2);
             enemy_movement_1(enemy, &enemyDirection, &downFlag, mostLeftEnemy, mostRightEnemy);
-
+            update_laser(&laser, enemy, mostRightEnemy, mostLeftEnemy);
+            draw_laser(laser);
             al_draw_bitmap(player->bitmap, player->x, PLAYERY, 0);
-            //draw_all_enemies(enemy);
-            
+            draw_all_enemies(enemy);
             al_flip_display();
-            printf("most right: %f\n", mostRightEnemy->x);
-            printf("most left: %f\n", mostLeftEnemy->x);
         }
 
 
