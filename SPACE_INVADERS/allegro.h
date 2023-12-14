@@ -3,6 +3,7 @@
 #define __ALLEGRO__
 
 #include <stdbool.h>
+#include <time.h>
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>

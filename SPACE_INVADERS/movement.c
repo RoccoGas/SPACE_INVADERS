@@ -148,3 +148,9 @@ void update_most_left(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus* 
 	}
 	
 }
+void enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
+	srand(time(NULL));
+
+
+
+}
