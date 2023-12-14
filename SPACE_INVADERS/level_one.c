@@ -29,6 +29,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
 
     enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]; //despues va a ser un vector esto
     laser_t laser;
+    enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT];
 
 
     laser.moving = false; 
@@ -113,6 +114,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
             enemy_movement_1(enemy, &enemyDirection, &downFlag, mostLeftEnemy, mostRightEnemy);
             update_laser(&laser, enemy, mostRightEnemy, mostLeftEnemy);
             draw_laser(laser);
+            printf("Hay %d enemigos vivos!\n", count_alive_enemies(enemy));
             al_draw_bitmap(player->bitmap, player->x, PLAYERY, 0);
             draw_all_enemies(enemy);
             al_flip_display();

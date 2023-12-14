@@ -61,10 +61,11 @@ void update_enemy_y(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
 
 void draw_all_enemies(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
 	int i, j;
-
+	int  aux = LEVEL1_COLS * LEVEL1_ROWS;
 	for (i = 0; i < LEVEL1_ROWS; i++) {
 		for (j = 0; j < LEVEL1_COLS; j++) {
 			if (enemy[i][j].alive) {
+
 				al_draw_bitmap(enemy[i][j].bitmap, enemy[i][j].x, enemy[i][j].y, 0);
 			}
 		}
@@ -91,16 +92,23 @@ void update_laser(laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], e
 	if (laser->moving) {
 		for (i = 0; i < LEVEL1_ROWS; i++) {
 			for (j = 0; j < LEVEL1_COLS; j++) {
-				if ((laser->x > enemy[i][j].x) && (laser->x < enemy[i][j].x + ENEMY_WIDTH) && (laser->y > enemy[i][j].y) && (laser->y < enemy[i][j].y + ENEMY_HEIGHT) && (enemy[i][j].alive)) { //Choco
+				if ((laser->x > enemy[i][j].x) && (laser->x < enemy[i][j].x + ENEMY_WIDTH) && (laser->y > enemy[i][j].y) && (laser->y < enemy[i][j].y + ENEMY_HEIGHT) && (enemy[i][j].alive)) { //Choco con enemigo
 					laser->moving = false;
 					enemy[i][j].alive = false;
+					printf("MATE AL ENEMIGO: %p\n", &enemy[i][j]);
 					if (&enemy[i][j] == &mostLeft) {
+						printf("UPdate de mostleft!!!!\n");
 						update_most_left(enemy, &mostLeft);
+						enemy[i][j].alive = false;
 
 
 					}
 					else if (&enemy[i][j] == &mostRight) {
+						printf("UPdate de mostright!!!!\n");
+
 						update_most_right(enemy, &mostRight);
+						enemy[i][j].alive = false;
+
 					}
 					return;
 				}
@@ -123,9 +131,9 @@ void update_most_right(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus*
 	for (i = LEVEL1_COLS - 1; i >= 0; i--) {
 		for (j = 0; j < LEVEL1_ROWS; j++) {
 			if (enemy[j][i].alive) {
+				//enemy[j][i].alive = false;
 				*mostRight = enemy[j][i];
-				/*printf("UPDATED MOST RIGHT!\n");
-				printf("mostRight from: %p to %p\n", mostRight, &enemy[j][i]);*/
+				
 
 				return;
 
@@ -138,9 +146,9 @@ void update_most_left(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus* 
 	for (i = 0; i < LEVEL1_COLS; i++) {
 		for (j = 0; j < LEVEL1_ROWS; j++) {
 			if (enemy[j][i].alive) {
+				//enemy[j][i].alive = false;
 				*mostLeft = enemy[j][i];
-				/*printf("UPDATED MOST LEFT!\n");
-				printf("mostLeft from: %p to %p\n", *aux, &enemy[j][i]);*/
+				
 
 				return;
 			}
@@ -148,8 +156,21 @@ void update_most_left(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus* 
 	}
 	
 }
-//void enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyLaser_t enemyLasers[]) {
-//	int i, j;
+int count_alive_enemies(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
+	int i, j;
+	int counter = 0;
+	for (i = 0; i < LEVEL1_COLS; i++) {
+		for (j = 0; j < LEVEL1_ROWS; j++) {
+			if (enemy[j][i].alive) {
+				counter++;
+			}
+		}
+	}
+	return counter;
+}
+
+//void enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyLaser_t enemyLasers[]) { 
+//	int i, j, t;
 //	srand(time(NULL));
 //	
 //	int shootingEnemyX = rand() % LEVEL1_COLS;
@@ -159,7 +180,10 @@ void update_most_left(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus* 
 //		for (i = shootingEnemyY; i < LEVEL1_ROWS; i++) {
 //			for (j = shootingEnemyX; j < LEVEL1_COLS; j++) {
 //				if (enemy[i][j].alive) {
-//					blabla;
+//					for (t = 0; t < MAX_ENEMY_LASER_AMOUNT; t++) {
+//						if()
+//
+//					}
 //					return;
 //				}
 //			}
@@ -168,9 +192,9 @@ void update_most_left(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus* 
 //		for (i = shootingEnemyY; i >= 0; i--) {
 //			for (j = shootingEnemyX; j >= 0; j--) {
 //				if (enemy[i][j].alive) {
-//					blabla;
+//
 //					return;
-//					}
+//					
 //				}
 //			}
 //
@@ -179,7 +203,8 @@ void update_most_left(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus* 
 //}
 //
 //void update_enemy_shot(enemyLaser_t enemyLasers[]) {
+//
 //	if (enemyLaser->moving) {
 //		
 //	}
-	
+//	

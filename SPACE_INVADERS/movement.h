@@ -25,6 +25,8 @@ void update_laser(laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], e
 void draw_laser(laser_t laser);
 void update_most_left(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus* mostLeft);
 void update_most_right(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus* mostRight);
+int count_alive_enemies(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]);
+
 
 
 
