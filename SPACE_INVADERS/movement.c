@@ -148,9 +148,38 @@ void update_most_left(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus* 
 	}
 	
 }
-void enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
-	srand(time(NULL));
-
-
-
-}
+//void enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyLaser_t enemyLasers[]) {
+//	int i, j;
+//	srand(time(NULL));
+//	
+//	int shootingEnemyX = rand() % LEVEL1_COLS;
+//	int shootingEnemyY = rand() % LEVEL1_ROWS;
+//	
+//	if (!enemy[shootingEnemyY][shootingEnemyX].alive) {
+//		for (i = shootingEnemyY; i < LEVEL1_ROWS; i++) {
+//			for (j = shootingEnemyX; j < LEVEL1_COLS; j++) {
+//				if (enemy[i][j].alive) {
+//					blabla;
+//					return;
+//				}
+//			}
+//		}
+//
+//		for (i = shootingEnemyY; i >= 0; i--) {
+//			for (j = shootingEnemyX; j >= 0; j--) {
+//				if (enemy[i][j].alive) {
+//					blabla;
+//					return;
+//					}
+//				}
+//			}
+//
+//		}
+//	}
+//}
+//
+//void update_enemy_shot(enemyLaser_t enemyLasers[]) {
+//	if (enemyLaser->moving) {
+//		
+//	}
+	

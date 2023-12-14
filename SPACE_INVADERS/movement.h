@@ -10,6 +10,12 @@ typedef struct {
 	bool moving;
 }	laser_t;
 
+typedef struct {
+	float x;
+	float y;
+	bool moving;
+}	enemyLaser_t;
+
 void draw_all_enemies(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]);
 void update_enemy_y(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]);
 void update_enemy_x(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int enemyDirection);
