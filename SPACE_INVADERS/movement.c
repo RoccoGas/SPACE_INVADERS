@@ -177,6 +177,7 @@ int count_alive_lasers(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
 }
 
 void decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) { 
+	printf("ENTRE A DECISE ENEMY SHOT!\n");
 	int i, j;
 	srand(time(NULL));
 	

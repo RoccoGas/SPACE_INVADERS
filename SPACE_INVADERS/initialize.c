@@ -4,6 +4,7 @@
 #include "allegro.h"
 #include "menu.h"
 #include "header.h"
+#include "movement.h"
 
 bool init_player(playerStatus* player) {
     player->x = 20;
@@ -17,6 +18,18 @@ bool init_player(playerStatus* player) {
     return true;
 
 }
+
+bool init_enemy_lasers(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
+    unsigned int i;
+    for (i = 0; i < MAX_ENEMY_LASER_AMOUNT; i++) {
+        enemyLasers[i].moving = false;
+        enemyLasers[i].x = 0;
+        enemyLasers[i].y = 0;
+    }
+    return true;
+
+}
+
 
 
 bool init_enemy(enemyStatus* enemy, const char* enemyTypeFile){

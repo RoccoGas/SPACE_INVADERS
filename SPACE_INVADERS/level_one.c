@@ -34,6 +34,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
 
     laser.moving = false; 
     init_all_enemies1(enemy, ENEMY1_FILE_PATH);
+    init_enemy_lasers(enemyLasers);
 
     unsigned int enemyDirection = DEFAULT_ENEMY_DIRECTION;
     unsigned int downFlag = 1; //para que no se vaya para abajo al principio
@@ -119,12 +120,13 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
             //printf("Hay %d enemigos vivos!\n", count_alive_enemies(enemy));
             al_draw_bitmap(player->bitmap, player->x, PLAYERY, 0);
             draw_all_enemies(enemy);
-            /*if (time == 200) {
+            if (time == 200) {
                 decide_enemy_shot(enemy, enemyLasers);
                 time = 0;
             }
+            printf("Hay %d lasers 'vivos'\n", count_alive_lasers(enemyLasers));
             update_enemy_shot(enemyLasers, player);
-            draw_enemy_laser(enemyLasers);*/
+            draw_enemy_laser(enemyLasers);
             al_flip_display();
         }
 
