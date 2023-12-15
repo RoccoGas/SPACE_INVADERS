@@ -89,6 +89,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
 
     enum ERROR_OPTIONS_E levelOneOption = NO_ERROR_START_GAME;
 
+    unsigned int time = 0;
     while (levelOneLoop) {
 
         al_get_keyboard_state(&keyboardState);
@@ -110,13 +111,20 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
        
 
         if (event.type == ALLEGRO_EVENT_TIMER) {
+            time++;
             al_clear_to_color(BLACK2);
             enemy_movement_1(enemy, &enemyDirection, &downFlag, mostLeftEnemy, mostRightEnemy);
-            update_laser(&laser, enemy, mostRightEnemy, mostLeftEnemy);
+            update_laser(&laser, enemy, &mostRightEnemy, &mostLeftEnemy);
             draw_laser(laser);
-            printf("Hay %d enemigos vivos!\n", count_alive_enemies(enemy));
+            //printf("Hay %d enemigos vivos!\n", count_alive_enemies(enemy));
             al_draw_bitmap(player->bitmap, player->x, PLAYERY, 0);
             draw_all_enemies(enemy);
+            /*if (time == 200) {
+                decide_enemy_shot(enemy, enemyLasers);
+                time = 0;
+            }
+            update_enemy_shot(enemyLasers, player);
+            draw_enemy_laser(enemyLasers);*/
             al_flip_display();
         }
 
