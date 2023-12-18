@@ -120,8 +120,8 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
             //printf("Hay %d enemigos vivos!\n", count_alive_enemies(enemy));
             al_draw_bitmap(player->bitmap, player->x, PLAYERY, 0);
             draw_all_enemies(enemy);
-            if (time == 200) {
-                decide_enemy_shot(enemy, enemyLasers);
+            if (time == 100) {
+                start_enemy_shot(enemyLasers, decide_enemy_shot(enemy));
                 time = 0;
             }
             printf("Hay %d lasers 'vivos'\n", count_alive_lasers(enemyLasers));

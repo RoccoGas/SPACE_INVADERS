@@ -176,7 +176,7 @@ int count_alive_lasers(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
 	return counter;
 }
 
-enemyStatus*  decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) { //devuelve un puntero al enemigo que va a disparar el proximo disparo
+enemyStatus*  decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) { //devuelve un puntero al enemigo que va a disparar el proximo disparo
 	printf("ENTRE A DECISE ENEMY SHOT!\n");
 	int i, j;
 	srand(time(NULL));
@@ -184,14 +184,14 @@ enemyStatus*  decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], ene
 	int shootingEnemyX = rand() % LEVEL1_COLS;
 	int shootingEnemyY = rand() % LEVEL1_ROWS;
 	
-	if (!enemy[shootingEnemyY][shootingEnemyX].alive) {
+	if (enemy[shootingEnemyY][shootingEnemyX].alive) {
+		return &enemy[shootingEnemyY][shootingEnemyX];
+	}
+	else{
 		for (i = shootingEnemyY; i < LEVEL1_ROWS; i++) {
 			for (j = shootingEnemyX; j < LEVEL1_COLS; j++) {
 				if (enemy[i][j].alive) {
-					if (count_alive_lasers(enemyLasers) < MAX_ENEMY_LASER_AMOUNT) {
-						start_enemy_shot(enemyLasers, enemy[i][j].x, enemy[i][j].y);
-					}
-					return;
+					return &enemy[i][j];
 				}
 			}
 		}
@@ -199,25 +199,28 @@ enemyStatus*  decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], ene
 		for (i = shootingEnemyY; i >= 0; i--) {
 			for (j = shootingEnemyX; j >= 0; j--) {
 				if (enemy[i][j].alive) {
-					if (count_alive_lasers(enemyLasers) < MAX_ENEMY_LASER_AMOUNT) {
-						start_enemy_shot(enemyLasers, enemy[i][j].x, enemy[i][j].y);
-					}
-					return;
+					return &enemy[i][j];
 					
 				}
 			}
 
 		}
 	}
+	return NULL;
 }
 
-void start_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], float x, float y) {
+void start_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], enemyStatus* chosenEnemy) {
+	if (count_alive_lasers(enemyLasers) == MAX_ENEMY_LASER_AMOUNT) {
+		printf("MAXIMA CANTIDAD DE LASERS\n");
+		return;
+	}
 	int i;
 	for (i = 0; i < MAX_ENEMY_LASER_AMOUNT; i++) {
 		if (enemyLasers[i].moving == false) {
 			enemyLasers[i].moving = true;
-			enemyLasers[i].x = x;
-			enemyLasers[i].y = y;
+			enemyLasers[i].x = chosenEnemy->x;
+			enemyLasers[i].y = chosenEnemy->y;
+			return;
 		}
 	}
 

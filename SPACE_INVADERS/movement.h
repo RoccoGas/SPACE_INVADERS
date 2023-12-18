@@ -30,8 +30,8 @@ int count_alive_enemies(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]);
 int count_alive_lasers(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]);
 
 
-enemyStatus* decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]);
-void start_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], float x, float y);
+enemyStatus* decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]);
+void start_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], enemyStatus* chosenEnemy);
 void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], playerStatus* player);
 void draw_enemy_laser(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]);
 
