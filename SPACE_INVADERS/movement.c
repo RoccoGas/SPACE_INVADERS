@@ -182,30 +182,22 @@ enemyStatus*  decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) { /
 	srand(time(NULL));
 	
 	int shootingEnemyX = rand() % LEVEL1_COLS;
-	int shootingEnemyY = rand() % LEVEL1_ROWS;
 	
-	if (enemy[shootingEnemyY][shootingEnemyX].alive) {
-		return &enemy[shootingEnemyY][shootingEnemyX];
-	}
-	else{
-		for (i = shootingEnemyY; i < LEVEL1_ROWS; i++) {
-			for (j = shootingEnemyX; j < LEVEL1_COLS; j++) {
-				if (enemy[i][j].alive) {
-					return &enemy[i][j];
-				}
+	for (j = shootingEnemyX; j < LEVEL1_COLS; j++) {
+		for (i = LEVEL1_ROWS - 1; i >= 0; i--) { 
+			if (enemy[i][j].alive) {
+				return &enemy[i][j];
 			}
 		}
-
-		for (i = shootingEnemyY; i >= 0; i--) {
-			for (j = shootingEnemyX; j >= 0; j--) {
-				if (enemy[i][j].alive) {
-					return &enemy[i][j];
-					
-				}
+	}
+	for (j = shootingEnemyX - 1; j >= 0 ; j--) { // Para no hacer dos veces el mismo caso 
+		for (i = LEVEL1_ROWS - 1; i >= 0; i--) {
+			if (enemy[i][j].alive) {
+				return &enemy[i][j];
 			}
-
 		}
 	}
+
 	return NULL;
 }
 
@@ -218,8 +210,8 @@ void start_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], enemySta
 	for (i = 0; i < MAX_ENEMY_LASER_AMOUNT; i++) {
 		if (enemyLasers[i].moving == false) {
 			enemyLasers[i].moving = true;
-			enemyLasers[i].x = chosenEnemy->x;
-			enemyLasers[i].y = chosenEnemy->y;
+			enemyLasers[i].x = chosenEnemy->x + ENEMY_WIDTH / 2;
+			enemyLasers[i].y = chosenEnemy->y + ENEMY_HEIGHT;
 			return;
 		}
 	}
