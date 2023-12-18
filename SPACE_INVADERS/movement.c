@@ -81,7 +81,7 @@ void shoot_laser(playerStatus* player, laser_t* laser) {
 	laser->y = PLAYERY;
 }
 
-void update_laser(laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus** mostRight, enemyStatus** mostLeft) {
+void update_laser(laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus** mostRight, enemyStatus** mostLeft, enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
 	laser->y -= 20;
 	if (laser->y < 0) { // llego al techo
 		laser->moving = false;
@@ -90,6 +90,16 @@ void update_laser(laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], e
 	
 	unsigned int i, j;
 	if (laser->moving) {
+		for (i = 0; i < MAX_ENEMY_LASER_AMOUNT; i++) { // Veo si choca con un laser enemigo
+			if (enemyLasers[i].moving) {
+				if ((enemyLasers[i].x -(LASER_WIDTH/2 + 3) <= laser->x) && (enemyLasers[i].x + (LASER_WIDTH / 2 + 3) >= laser->x) && ( laser->y >  enemyLasers[i].y) && ( laser->y < enemyLasers[i].y + LASER_LENGTH)) {
+					enemyLasers[i].moving = false;
+					laser->moving = false;
+					printf("CHOCARON LOS LASERS!\n");
+					return;
+				}
+			}
+		}
 		for (i = 0; i < LEVEL1_ROWS; i++) {
 			for (j = 0; j < LEVEL1_COLS; j++) {
 				if ((laser->x > enemy[i][j].x) && (laser->x < enemy[i][j].x + ENEMY_WIDTH) && (laser->y > enemy[i][j].y) && (laser->y < enemy[i][j].y + ENEMY_HEIGHT) && (enemy[i][j].alive)) { //Choco con enemigo
@@ -122,7 +132,7 @@ void draw_laser(laser_t laser) {
 	if (laser.moving == false) {
 		return;
 	}
-	al_draw_line(laser.x, laser.y, laser.x, laser.y + LASER_LENGTH, RED, 4);
+	al_draw_line(laser.x, laser.y, laser.x, laser.y + LASER_LENGTH, RED, LASER_WIDTH);
 }
 
 enemyStatus* update_most_right(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
@@ -177,7 +187,7 @@ int count_alive_lasers(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
 }
 
 enemyStatus*  decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) { //devuelve un puntero al enemigo que va a disparar el proximo disparo
-	printf("ENTRE A DECISE ENEMY SHOT!\n");
+	//printf("ENTRE A DECISE ENEMY SHOT!\n");
 	int i, j;
 	srand(time(NULL));
 	
@@ -238,7 +248,7 @@ void draw_enemy_laser(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
 	int i;
 	for (i = 0; i < MAX_ENEMY_LASER_AMOUNT; i++) {
 		if (enemyLasers[i].moving == true) {
-			al_draw_line(enemyLasers[i].x, enemyLasers[i].y, enemyLasers[i].x, enemyLasers[i].y + LASER_LENGTH, GREEN, 5);
+			al_draw_line(enemyLasers[i].x, enemyLasers[i].y, enemyLasers[i].x, enemyLasers[i].y + LASER_LENGTH, GREEN, LASER_WIDTH);
 		}
 	}
 }

@@ -97,12 +97,12 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
 
         if (al_key_down(&keyboardState, ALLEGRO_KEY_RIGHT)) {
             if ((player->x + SPACESHIP_SIZE) < DISPLAY_WIDTH) {
-                player->x += 5;
+                player->x += 3;
             }
         }
         else if (al_key_down(&keyboardState, ALLEGRO_KEY_LEFT)) {
             if (player->x > 0) {
-                player->x -= 5;
+                player->x -= 3;
             }
         }
         else if (al_key_down(&keyboardState, ALLEGRO_KEY_SPACE)) {
@@ -115,7 +115,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
             time++;
             al_clear_to_color(BLACK2);
             enemy_movement_1(enemy, &enemyDirection, &downFlag, mostLeftEnemy, mostRightEnemy);
-            update_laser(&laser, enemy, &mostRightEnemy, &mostLeftEnemy);
+            update_laser(&laser, enemy, &mostRightEnemy, &mostLeftEnemy, enemyLasers);
             draw_laser(laser);
             //printf("Hay %d enemigos vivos!\n", count_alive_enemies(enemy));
             al_draw_bitmap(player->bitmap, player->x, PLAYERY, 0);
@@ -124,7 +124,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
                 start_enemy_shot(enemyLasers, decide_enemy_shot(enemy));
                 time = 0;
             }
-            printf("Hay %d lasers 'vivos'\n", count_alive_lasers(enemyLasers));
+            //printf("Hay %d lasers 'vivos'\n", count_alive_lasers(enemyLasers));
             update_enemy_shot(enemyLasers, player);
             draw_enemy_laser(enemyLasers);
             al_flip_display();
