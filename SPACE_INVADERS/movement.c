@@ -166,9 +166,9 @@ int count_alive_enemies(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
 }
 
 int count_alive_lasers(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
-	int i, j;
+	int i;
 	int counter = 0;
-	for (i = 0; i < LEVEL1_COLS; i++) {
+	for (i = 0; i < MAX_ENEMY_LASER_AMOUNT; i++) {
 		if (enemyLasers[i].moving) {
 			counter++;
 		}
@@ -176,7 +176,7 @@ int count_alive_lasers(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
 	return counter;
 }
 
-void decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) { 
+enemyStatus*  decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) { //devuelve un puntero al enemigo que va a disparar el proximo disparo
 	printf("ENTRE A DECISE ENEMY SHOT!\n");
 	int i, j;
 	srand(time(NULL));
@@ -231,6 +231,7 @@ void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], playerS
 		}
 		if ((enemyLasers[i].x > player->x) && (enemyLasers[i].x < player->x + SPACESHIP_SIZE) && (enemyLasers[i].y > PLAYERY) && (enemyLasers[i].y < PLAYERY + SPACESHIP_SIZE) && ((enemyLasers[i].moving))) {// choca contra el jugador
 			printf("PERDISTE!");
+			enemyLasers[i].moving = false;
 		}
 		if (enemyLasers[i].y > DISPLAY_HEIGHT) {
 			enemyLasers[i].moving = false;
