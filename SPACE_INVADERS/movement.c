@@ -236,7 +236,7 @@ void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], playerS
 			printf("PERDISTE!");
 			enemyLasers[i].moving = false;
 		}
-		if (enemyLasers[i].y > DISPLAY_HEIGHT) {
+		else if (enemyLasers[i].y > DISPLAY_HEIGHT) {
 			enemyLasers[i].moving = false;
 		}
 	}
@@ -245,9 +245,8 @@ void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], playerS
 void draw_enemy_laser(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
 	int i;
 	for (i = 0; i < MAX_ENEMY_LASER_AMOUNT; i++) {
-		if (enemyLasers[i].moving == false) {
-			break;
+		if (enemyLasers[i].moving == true) {
+			al_draw_line(enemyLasers[i].x, enemyLasers[i].y, enemyLasers[i].x, enemyLasers[i].y + LASER_LENGTH, GREEN, 5);
 		}
-		al_draw_line(enemyLasers[i].x, enemyLasers[i].y, enemyLasers[i].x, enemyLasers[i].y + LASER_LENGTH, BLUE, 4);
 	}
 }
