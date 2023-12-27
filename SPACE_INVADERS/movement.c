@@ -227,20 +227,34 @@ void start_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], enemySta
 
 }
 
-void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], playerStatus* player) {
-	int i;
-	for (i = 0; i < MAX_ENEMY_LASER_AMOUNT; i++) {
-		if (enemyLasers[i].moving) { // actualizo posicion
-			enemyLasers[i].y += 3;
+void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], playerStatus* player, shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH]) {
+	int n;
+	int i, k, j;
+	for (n = 0; n < MAX_ENEMY_LASER_AMOUNT; n++) {
+		if (enemyLasers[n].moving) { // actualizo posicion
+			enemyLasers[n].y += 3;
 		}
-		if ((enemyLasers[i].x > player->x) && (enemyLasers[i].x < player->x + SPACESHIP_SIZE) && (enemyLasers[i].y > PLAYERY) && (enemyLasers[i].y < PLAYERY + SPACESHIP_SIZE) && ((enemyLasers[i].moving))) {// choca contra el jugador
+		if ((enemyLasers[n].x > player->x) && (enemyLasers[n].x < player->x + SPACESHIP_SIZE) && (enemyLasers[n].y > PLAYERY) && (enemyLasers[n].y < PLAYERY + SPACESHIP_SIZE) && ((enemyLasers[n].moving))) {// choca contra el jugador
 			printf("PERDISTE!");
-			enemyLasers[i].moving = false;
+			enemyLasers[n].moving = false;
 		}
-		else if (enemyLasers[i].y > DISPLAY_HEIGHT) {
-			enemyLasers[i].moving = false;
+		else if (enemyLasers[n].y > DISPLAY_HEIGHT) {
+			enemyLasers[n].moving = false;
+		}
+		else {
+			for (k = 0; k < MAX_SHIELD_AMOUNT; k++) {
+				for (i = 0; i < MAX_SHIELD_HEIGHT; i++) {
+					for (j = 0; j < MAX_SHIELD_LENGTH; j++) { //Cada for genera un escudo "grande"
+						if ((shields[k][i][j].health > 0) && (enemyLasers[n].x > shields[k][i][j].x) && (enemyLasers[n].x < shields[k][i][j].x + INDIVIDUAL_SHIELD_THICKNESS) && (enemyLasers[n].y > shields[k][i][j].y) && (enemyLasers[n].y < shields[k][i][j].y + INDIVIDUAL_SHIELD_THICKNESS) && ((enemyLasers[n].moving))) { // choco el laser contra el escudo
+							enemyLasers[n].moving = false;
+							shields[k][i][j].health--;
+						}
+					}
+				}
+			}
 		}
 	}
+	
 }
 
 void draw_enemy_laser(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
@@ -257,7 +271,9 @@ void draw_shields(shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHI
 	for (k = 0; k < MAX_SHIELD_AMOUNT; k++) {
 		for (i = 0; i < MAX_SHIELD_HEIGHT; i++) {
 			for (j = 0; j < MAX_SHIELD_LENGTH; j++) { //Cada for genera un escudo "grande"
-				al_draw_filled_rectangle(shields[k][j][i].x, shields[k][j][i].y, shields[k][j][i].x + INDIVIDUAL_SHIELD_THICKNESS, shields[k][j][i].y + INDIVIDUAL_SHIELD_THICKNESS, BLUE);
+				if (shields[k][i][j].health > 0) {
+					al_draw_filled_rectangle(shields[k][i][j].x, shields[k][i][j].y, shields[k][i][j].x + INDIVIDUAL_SHIELD_THICKNESS, shields[k][i][j].y + INDIVIDUAL_SHIELD_THICKNESS, BLUE);
+				}
 			}
 		}
 	}

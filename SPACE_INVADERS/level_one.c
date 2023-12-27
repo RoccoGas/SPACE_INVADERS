@@ -127,7 +127,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
                 time = 0;
             }
             //printf("Hay %d lasers 'vivos'\n", count_alive_lasers(enemyLasers));
-            update_enemy_shot(enemyLasers, player);
+            update_enemy_shot(enemyLasers, player, shields);
             draw_enemy_laser(enemyLasers);
             draw_shields(shields);
             al_flip_display();
