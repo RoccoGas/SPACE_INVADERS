@@ -44,12 +44,13 @@ enum ERROR_OPTIONS_E { NO_ERROR_START_GAME, RESUME_GAME, QUIT_GAME, QUIT_TO_MENU
 
 #define SHIELD_OFFSET (DISPLAY_WIDTH - (4*MAX_SHIELD_ALLEGRO_LENGTH))/(MAX_SHIELD_AMOUNT + 1)
 
-
+enum PLAYER_STATES_E { NOT_MOVING, MOVING_LEFT, MOVING_RIGHT };
 
 typedef struct{
 	float x;
 	unsigned int score;
 	unsigned int lives;
+	enum PLAYER_STATUS_E state;
 	ALLEGRO_BITMAP* bitmap;
 } playerStatus;
 

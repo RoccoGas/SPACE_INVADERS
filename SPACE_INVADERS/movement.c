@@ -29,6 +29,15 @@ void enemy_movement_1(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int 
 
 }
 
+void update_player(playerStatus* player, ALLEGRO_KEYBOARD_STATE keyboardState, laser_t* laser) {
+	if (player->state == MOVING_RIGHT) {
+		player->x += 3;
+	}
+	else if (player->state == MOVING_LEFT) {
+		player->x -= 3;
+	}
+}
+
 
 void update_enemy_x(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int enemyDirection) {
 	int i, j;
