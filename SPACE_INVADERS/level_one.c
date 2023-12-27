@@ -91,7 +91,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
     bool levelOneLoop = true; // Este es el "game loop" del nivel 1
 
     enum ERROR_OPTIONS_E levelOneOption = NO_ERROR_START_GAME;
-
+    int shooting = 0; //solucion momentanea al doble disparo
     unsigned int time = 0;
     while (levelOneLoop) {
 
@@ -108,9 +108,18 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
             }
         }
         else if (al_key_down(&keyboardState, ALLEGRO_KEY_SPACE)) {
-            shoot_laser(player, &laser);
+            if(shooting == 0){ //sol momentanea
+                shoot_laser(player, &laser);
+            } // 
+            shooting = 1; //sol momentanea
+        }//
+        else { //
+            shooting = 0; // sol momentanea
         }
+
+        
         al_wait_for_event(queue, &event);
+
        
 
         if (event.type == ALLEGRO_EVENT_TIMER) {
