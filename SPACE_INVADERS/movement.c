@@ -105,7 +105,6 @@ void update_laser(laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], e
 				if ((laser->x > enemy[i][j].x) && (laser->x < enemy[i][j].x + ENEMY_WIDTH) && (laser->y > enemy[i][j].y) && (laser->y < enemy[i][j].y + ENEMY_HEIGHT) && (enemy[i][j].alive)) { //Choco con enemigo
 					laser->moving = false;
 					enemy[i][j].alive = false;
-					//printf("MATE AL ENEMIGO: %p\n", &enemy[i][j]);
 					if (&enemy[i][j] == *mostLeft) {
 						printf("UPdate de mostleft de  %p a ", *mostLeft);
 						*mostLeft = update_most_left(enemy);
@@ -249,6 +248,17 @@ void draw_enemy_laser(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
 	for (i = 0; i < MAX_ENEMY_LASER_AMOUNT; i++) {
 		if (enemyLasers[i].moving == true) {
 			al_draw_line(enemyLasers[i].x, enemyLasers[i].y, enemyLasers[i].x, enemyLasers[i].y + LASER_LENGTH, GREEN, LASER_WIDTH);
+		}
+	}
+}
+
+void draw_shields(shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH]) {
+	int i, k, j;
+	for (k = 0; k < MAX_SHIELD_AMOUNT; k++) {
+		for (i = 0; i < MAX_SHIELD_HEIGHT; i++) {
+			for (j = 0; j < MAX_SHIELD_LENGTH; j++) { //Cada for genera un escudo "grande"
+				al_draw_filled_rectangle(shields[k][j][i].x, shields[k][j][i].y, shields[k][j][i].x + INDIVIDUAL_SHIELD_THICKNESS, shields[k][j][i].y + INDIVIDUAL_SHIELD_THICKNESS, BLUE);
+			}
 		}
 	}
 }

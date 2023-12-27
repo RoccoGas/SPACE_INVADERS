@@ -16,6 +16,12 @@ typedef struct {
 	bool moving;
 }	enemyLaser_t;
 
+typedef struct {
+	float x;
+	float y;
+	int health;
+} shield_t;
+
 void draw_all_enemies(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]);
 void update_enemy_y(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]);
 void update_enemy_x(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int enemyDirection);
@@ -34,8 +40,7 @@ enemyStatus* decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]);
 void start_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], enemyStatus* chosenEnemy);
 void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], playerStatus* player);
 void draw_enemy_laser(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]);
-
-
+void draw_shields(shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH]);
 
 
 

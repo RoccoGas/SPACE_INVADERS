@@ -59,3 +59,16 @@ bool init_all_enemies1(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], const char* 
     }
     return true;
 }
+
+bool init_all_shields(shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH]) { // hay tres escudos de 4 cada uno por eso MAX_SHIELD_AMOUNT es 12
+    int i, k, j;
+    for (k = 0; k < MAX_SHIELD_AMOUNT; k++) {
+        for (i = 0; i < MAX_SHIELD_HEIGHT; i++) {
+            for (j = 0; j <= MAX_SHIELD_LENGTH; j++) { //Cada for genera un escudo "grande"
+                shields[k][i][j].x = (((k + 1) *SHIELD_OFFSET) +( k * MAX_SHIELD_ALLEGRO_LENGTH)) + j * INDIVIDUAL_SHIELD_THICKNESS;
+                shields[k][i][j].y = (SHIELD_Y + (i *INDIVIDUAL_SHIELD_THICKNESS));
+                shields[k][i][j].health = 1;
+            }
+        }
+    }
+}

@@ -30,11 +30,13 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
     enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]; //despues va a ser un vector esto
     laser_t laser;
     enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT];
+    shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH];
 
 
     laser.moving = false; 
     init_all_enemies1(enemy, ENEMY1_FILE_PATH);
     init_enemy_lasers(enemyLasers);
+    init_all_shields(shields);
 
     unsigned int enemyDirection = DEFAULT_ENEMY_DIRECTION;
     unsigned int downFlag = 1; //para que no se vaya para abajo al principio
@@ -120,13 +122,14 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
             //printf("Hay %d enemigos vivos!\n", count_alive_enemies(enemy));
             al_draw_bitmap(player->bitmap, player->x, PLAYERY, 0);
             draw_all_enemies(enemy);
-            if (time == 100) {
+            if (time == 50) {
                 start_enemy_shot(enemyLasers, decide_enemy_shot(enemy));
                 time = 0;
             }
             //printf("Hay %d lasers 'vivos'\n", count_alive_lasers(enemyLasers));
             update_enemy_shot(enemyLasers, player);
             draw_enemy_laser(enemyLasers);
+            draw_shields(shields);
             al_flip_display();
         }
 
