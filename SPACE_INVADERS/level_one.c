@@ -117,7 +117,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
             time++;
             al_clear_to_color(BLACK2);
             enemy_movement_1(enemy, &enemyDirection, &downFlag, mostLeftEnemy, mostRightEnemy);
-            update_laser(&laser, enemy, &mostRightEnemy, &mostLeftEnemy, enemyLasers);
+            update_laser(&laser, enemy, &mostRightEnemy, &mostLeftEnemy, enemyLasers, shields);
             draw_laser(laser);
             //printf("Hay %d enemigos vivos!\n", count_alive_enemies(enemy));
             al_draw_bitmap(player->bitmap, player->x, PLAYERY, 0);

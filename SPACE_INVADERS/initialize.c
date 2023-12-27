@@ -67,7 +67,7 @@ bool init_all_shields(shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX
             for (j = 0; j <= MAX_SHIELD_LENGTH; j++) { //Cada for genera un escudo "grande"
                 shields[k][i][j].x = (((k + 1) *SHIELD_OFFSET) +( k * MAX_SHIELD_ALLEGRO_LENGTH)) + j * INDIVIDUAL_SHIELD_THICKNESS;
                 shields[k][i][j].y = (SHIELD_Y + (i *INDIVIDUAL_SHIELD_THICKNESS));
-                shields[k][i][j].health = 1;
+                shields[k][i][j].health = INITIAL_SHIELD_HEALTH_PART;
             }
         }
     }

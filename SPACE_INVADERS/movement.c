@@ -81,14 +81,15 @@ void shoot_laser(playerStatus* player, laser_t* laser) {
 	laser->y = PLAYERY;
 }
 
-void update_laser(laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus** mostRight, enemyStatus** mostLeft, enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
+void update_laser(laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus** mostRight, enemyStatus** mostLeft, enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH]) {
+	unsigned int i, j, k;
+
 	laser->y -= 20;
 	if (laser->y < 0) { // llego al techo
 		laser->moving = false;
 		return;
 	}
 	
-	unsigned int i, j;
 	if (laser->moving) {
 		for (i = 0; i < MAX_ENEMY_LASER_AMOUNT; i++) { // Veo si choca con un laser enemigo
 			if (enemyLasers[i].moving) {
@@ -125,6 +126,18 @@ void update_laser(laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], e
 
 			}
 		}
+
+		for (k = 0; k < MAX_SHIELD_AMOUNT; k++) {
+			for (i = 0; i < MAX_SHIELD_HEIGHT; i++) {
+				for (j = 0; j < MAX_SHIELD_LENGTH; j++) { //Cada for genera un escudo "grande"
+					if ((shields[k][i][j].health > 0) && (laser->x > shields[k][i][j].x) && (laser->x < shields[k][i][j].x + INDIVIDUAL_SHIELD_THICKNESS) && (laser->y  > shields[k][i][j].y) && (laser->y < shields[k][i][j].y + INDIVIDUAL_SHIELD_THICKNESS) && ((laser->moving))) { // choco el laser contra el escudo
+						laser->moving = false;
+						shields[k][i][j].health--;
+					}
+				}
+			}
+		}
+
 	}
 }
 void draw_laser(laser_t laser) {
