@@ -107,7 +107,8 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
                 player->x -= 3;
             }
         }
-        else if (al_key_down(&keyboardState, ALLEGRO_KEY_SPACE)) {
+        
+        if (al_key_down(&keyboardState, ALLEGRO_KEY_SPACE)) {
             if(shooting == 0){ //sol momentanea
                 shoot_laser(player, &laser);
             } // 
