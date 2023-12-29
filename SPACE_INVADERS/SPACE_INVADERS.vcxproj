@@ -151,6 +151,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="allegro.c" />
+    <ClCompile Include="drawing.c" />
     <ClCompile Include="movement.c" />
     <ClCompile Include="initialize.c" />
     <ClCompile Include="level_one.c" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="allegro.h" />
+    <ClInclude Include="drawing.h" />
     <ClInclude Include="header.h" />
     <ClInclude Include="initialize.h" />
     <ClInclude Include="menu.h" />

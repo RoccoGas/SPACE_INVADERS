@@ -30,10 +30,10 @@ void enemy_movement_1(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int 
 }
 
 void update_player(playerStatus* player, ALLEGRO_KEYBOARD_STATE keyboardState, laser_t* laser) {
-	if (player->state == MOVING_RIGHT) {
+	if ((player->state == MOVING_RIGHT) && ((player->x + SPACESHIP_SIZE) < DISPLAY_WIDTH)) {
 		player->x += 3;
 	}
-	else if (player->state == MOVING_LEFT) {
+	else if ((player->state == MOVING_LEFT) && (player->x  > 0)) {
 		player->x -= 3;
 	}
 }
@@ -58,7 +58,7 @@ void update_enemy_x(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int en
 }
 
 
-void update_enemy_y(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
+void update_enemy_y(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) { // baja a todos los enemigos cuando se chocan contra la pared
 	int i, j;
 	//printf("ENTRE A UPDATE_ENEMY_Y!\n");
 	for (i = 0; i < LEVEL1_ROWS; i++) {
@@ -68,18 +68,6 @@ void update_enemy_y(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
 	}
 }
 
-void draw_all_enemies(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
-	int i, j;
-	int  aux = LEVEL1_COLS * LEVEL1_ROWS;
-	for (i = 0; i < LEVEL1_ROWS; i++) {
-		for (j = 0; j < LEVEL1_COLS; j++) {
-			if (enemy[i][j].alive) {
-
-				al_draw_bitmap(enemy[i][j].bitmap, enemy[i][j].x, enemy[i][j].y, 0);
-			}
-		}
-	}
-}
 
 void shoot_laser(playerStatus* player, laser_t* laser) {
 	if (laser->moving == true) {
@@ -90,10 +78,10 @@ void shoot_laser(playerStatus* player, laser_t* laser) {
 	laser->y = PLAYERY;
 }
 
-void update_laser(laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus** mostRight, enemyStatus** mostLeft, enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH]) {
+void update_laser(playerStatus* player, laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus** mostRight, enemyStatus** mostLeft, enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH]) {
 	unsigned int i, j, k;
 
-	laser->y -= 20;
+	laser->y -= 10;
 	if (laser->y < 0) { // llego al techo
 		laser->moving = false;
 		return;
@@ -115,7 +103,8 @@ void update_laser(laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], e
 				if ((laser->x > enemy[i][j].x) && (laser->x < enemy[i][j].x + ENEMY_WIDTH) && (laser->y > enemy[i][j].y) && (laser->y < enemy[i][j].y + ENEMY_HEIGHT) && (enemy[i][j].alive)) { //Choco con enemigo
 					laser->moving = false;
 					enemy[i][j].alive = false;
-					if (&enemy[i][j] == *mostLeft) {
+					player->score += 100;
+					if (&enemy[i][j] == *mostLeft) { //mato al enemigo de mas arriva y a la izquierda, hay que actualizarlo
 						printf("UPdate de mostleft de  %p a ", *mostLeft);
 						*mostLeft = update_most_left(enemy);
 						printf("%p\n ", *mostLeft);
@@ -123,7 +112,7 @@ void update_laser(laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], e
 
 
 					}
-					else if (&enemy[i][j] == *mostRight) {
+					else if (&enemy[i][j] == *mostRight) { // mato al enemigo de mas arriba a la derecha
 						printf("UPdate de mostright!!!!\n");
 						*mostRight = update_most_right(enemy);
 						enemy[i][j].alive = false;
@@ -149,15 +138,10 @@ void update_laser(laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], e
 
 	}
 }
-void draw_laser(laser_t laser) {
-	if (laser.moving == false) {
-		return;
-	}
-	al_draw_line(laser.x, laser.y, laser.x, laser.y + LASER_LENGTH, RED, LASER_WIDTH);
-}
 
-enemyStatus* update_most_right(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
-	 int i, j; 
+
+enemyStatus* update_most_right(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) { // busca el enemigo mas arriva y a la derecha posible que este vivo, sirve para saber cuando este se choca contra
+	 int i, j;																	// los costados del display para que bajen los enemigos
 
 	for (i = LEVEL1_COLS - 1; i >= 0; i--) {
 		for (j = 0; j < LEVEL1_ROWS; j++) {
@@ -168,7 +152,7 @@ enemyStatus* update_most_right(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
 	}
 	return NULL;
 }
-enemyStatus*  update_most_left(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
+enemyStatus*  update_most_left(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {// busca el enemigo que esta mas arriba y a la izquierda posible  y devuelve un puntero a este
 	int i, j;
 	for (i = 0; i < LEVEL1_COLS; i++) {
 		for (j = 0; j < LEVEL1_ROWS; j++) {
@@ -196,7 +180,7 @@ int count_alive_enemies(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
 	return counter;
 }
 
-int count_alive_lasers(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
+int count_alive_lasers(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) { //cuenta los lasers vivos
 	int i;
 	int counter = 0;
 	for (i = 0; i < MAX_ENEMY_LASER_AMOUNT; i++) {
@@ -213,18 +197,37 @@ enemyStatus*  decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) { /
 	srand(time(NULL));
 	
 	int shootingEnemyX = rand() % LEVEL1_COLS;
+	int random = rand() % 2;
 	
-	for (j = shootingEnemyX; j < LEVEL1_COLS; j++) {
-		for (i = LEVEL1_ROWS - 1; i >= 0; i--) { 
-			if (enemy[i][j].alive) {
-				return &enemy[i][j];
+	if (random == 1) {
+		for (j = shootingEnemyX; j < LEVEL1_COLS; j++) {
+			for (i = LEVEL1_ROWS - 1; i >= 0; i--) {
+				if (enemy[i][j].alive) {
+					return &enemy[i][j];
+				}
+			}
+		}
+		for (j = shootingEnemyX - 1; j >= 0; j--) { // Para no hacer dos veces el mismo caso 
+			for (i = LEVEL1_ROWS - 1; i >= 0; i--) {
+				if (enemy[i][j].alive) {
+					return &enemy[i][j];
+				}
 			}
 		}
 	}
-	for (j = shootingEnemyX - 1; j >= 0 ; j--) { // Para no hacer dos veces el mismo caso 
-		for (i = LEVEL1_ROWS - 1; i >= 0; i--) {
-			if (enemy[i][j].alive) {
-				return &enemy[i][j];
+	else {
+		for (j = shootingEnemyX - 1; j >= 0; j--) { // Para no hacer dos veces el mismo caso 
+			for (i = LEVEL1_ROWS - 1; i >= 0; i--) {
+				if (enemy[i][j].alive) {
+					return &enemy[i][j];
+				}
+			}
+		}
+		for (j = shootingEnemyX; j < LEVEL1_COLS; j++) {
+			for (i = LEVEL1_ROWS - 1; i >= 0; i--) {
+				if (enemy[i][j].alive) {
+					return &enemy[i][j];
+				}
 			}
 		}
 	}
@@ -232,8 +235,8 @@ enemyStatus*  decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) { /
 	return NULL;
 }
 
-void start_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], enemyStatus* chosenEnemy) {
-	if (count_alive_lasers(enemyLasers) == MAX_ENEMY_LASER_AMOUNT) {
+void start_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], enemyStatus* chosenEnemy) { //comienza el disparo del enemigo con un enemigo elegido aleatoriamente
+	if (count_alive_lasers(enemyLasers) == MAX_ENEMY_LASER_AMOUNT) {								//pero siempre de la fila mas de abajo
 		printf("MAXIMA CANTIDAD DE LASERS\n");
 		return;
 	}
@@ -254,10 +257,16 @@ void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], playerS
 	int i, k, j;
 	for (n = 0; n < MAX_ENEMY_LASER_AMOUNT; n++) {
 		if (enemyLasers[n].moving) { // actualizo posicion
-			enemyLasers[n].y += 3;
+			enemyLasers[n].y += 5;
 		}
 		if ((enemyLasers[n].x > player->x) && (enemyLasers[n].x < player->x + SPACESHIP_SIZE) && (enemyLasers[n].y > PLAYERY) && (enemyLasers[n].y < PLAYERY + SPACESHIP_SIZE) && ((enemyLasers[n].moving))) {// choca contra el jugador
-			printf("PERDISTE!");
+			player->lives--;
+			destroy_all_enemy_lasers(enemyLasers);
+			al_rest(0.1);
+			player->x = 0;
+			if (player->lives == 0) {
+				printf("PERDISTE!");
+			}
 			enemyLasers[n].moving = false;
 		}
 		else if (enemyLasers[n].y > DISPLAY_HEIGHT) {
@@ -279,24 +288,10 @@ void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], playerS
 	
 }
 
-void draw_enemy_laser(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
+
+void destroy_all_enemy_lasers(laser_t lasers[MAX_ENEMY_LASER_AMOUNT]) {
 	int i;
 	for (i = 0; i < MAX_ENEMY_LASER_AMOUNT; i++) {
-		if (enemyLasers[i].moving == true) {
-			al_draw_line(enemyLasers[i].x, enemyLasers[i].y, enemyLasers[i].x, enemyLasers[i].y + LASER_LENGTH, GREEN, LASER_WIDTH);
-		}
-	}
-}
-
-void draw_shields(shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH]) {
-	int i, k, j;
-	for (k = 0; k < MAX_SHIELD_AMOUNT; k++) {
-		for (i = 0; i < MAX_SHIELD_HEIGHT; i++) {
-			for (j = 0; j < MAX_SHIELD_LENGTH; j++) { //Cada for genera un escudo "grande"
-				if (shields[k][i][j].health > 0) {
-					al_draw_filled_rectangle(shields[k][i][j].x, shields[k][i][j].y, shields[k][i][j].x + INDIVIDUAL_SHIELD_THICKNESS, shields[k][i][j].y + INDIVIDUAL_SHIELD_THICKNESS, BLUE);
-				}
-			}
-		}
+		lasers[i].moving = false;
 	}
 }

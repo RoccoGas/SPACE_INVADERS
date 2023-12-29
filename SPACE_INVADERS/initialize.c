@@ -8,7 +8,7 @@
 
 bool init_player(playerStatus* player) {
     player->x = 20;
-    player->lives = 3;
+    player->lives = 1;
     player->score = 0;
     player->state = NOT_MOVING;
     player->bitmap = al_load_bitmap("sprites/Spaceshipf.png");
@@ -65,7 +65,7 @@ bool init_all_shields(shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX
     int i, k, j;
     for (k = 0; k < MAX_SHIELD_AMOUNT; k++) {
         for (i = 0; i < MAX_SHIELD_HEIGHT; i++) {
-            for (j = 0; j <= MAX_SHIELD_LENGTH; j++) { //Cada for genera un escudo "grande"
+            for (j = 0; j < MAX_SHIELD_LENGTH; j++) { //Cada for genera un escudo "grande"
                 shields[k][i][j].x = (((k + 1) *SHIELD_OFFSET) +( k * MAX_SHIELD_ALLEGRO_LENGTH)) + j * INDIVIDUAL_SHIELD_THICKNESS;
                 shields[k][i][j].y = (SHIELD_Y + (i *INDIVIDUAL_SHIELD_THICKNESS));
                 shields[k][i][j].health = INITIAL_SHIELD_HEALTH_PART;

@@ -17,8 +17,8 @@ enum ERROR_OPTIONS_E { NO_ERROR_START_GAME, RESUME_GAME, QUIT_GAME, QUIT_TO_MENU
 #define ENEMY_WIDTH 51
 #define ENEMY_HEIGHT 38
 
-#define LEVEL1_ROWS 3
-#define LEVEL1_COLS 6
+#define LEVEL1_ROWS 5
+#define LEVEL1_COLS 8
 
 #define PLAYERY	840
 
@@ -33,8 +33,12 @@ enum ERROR_OPTIONS_E { NO_ERROR_START_GAME, RESUME_GAME, QUIT_GAME, QUIT_TO_MENU
 #define INITIAL_Y_OFFSET 60
 #define DEFAULT_ENEMY_DIRECTION ENEMY_DIRECTION_RIGHT
 #define ENEMY1_FILE_PATH "sprites/enemy1f.png"
+#define FONT_FILE_PATH "assets/menu/space_invaders_font.ttf"
 
-#define INITIAL_SHIELD_HEALTH_PART 1
+#define MENU_FONT_SIZE 80
+#define HUD_FONT_SIZE 40
+
+#define INITIAL_SHIELD_HEALTH_PART 2
 #define MAX_SHIELD_LENGTH 4
 #define MAX_SHIELD_HEIGHT 3
 #define MAX_SHIELD_AMOUNT 4
@@ -61,5 +65,23 @@ typedef struct {
 	bool alive;
 
 }	enemyStatus;
+
+typedef struct {
+	float x;
+	float y;
+	bool moving;
+}	laser_t;
+
+typedef struct {
+	float x;
+	float y;
+	bool moving;
+}	enemyLaser_t;
+
+typedef struct {
+	float x;
+	float y;
+	int health;
+} shield_t;
 
 #endif // !__HEADER__

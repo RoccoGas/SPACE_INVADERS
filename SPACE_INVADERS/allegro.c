@@ -27,7 +27,7 @@ bool initialize_allegro() {                      //Funcion que inicializa todo a
         return false;
     }
 
-    if (!al_init_ttf_addon()) {        // ADDON necesario para manejo de fuentes 
+    if (!al_init_ttf_addon()) {        
         fprintf(stdout, "Failed to initialize ttf addon!");
         al_shutdown_image_addon();
         al_shutdown_font_addon();
@@ -82,7 +82,7 @@ bool initialize_allegro() {                      //Funcion que inicializa todo a
 
 void destroy_allegro(void) {
     al_shutdown_image_addon();
-    al_shutdown_ttf_addon();
+    //al_shutdown_ttf_addon();
     al_shutdown_font_addon();
     al_shutdown_primitives_addon();
     al_uninstall_audio();

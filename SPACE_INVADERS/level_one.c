@@ -6,11 +6,9 @@
 #include "movement.h"
 #include <stdio.h>
 #include "initialize.h"
-#include <Windows.h>
+#include "drawing.h"
 
-void draw_heads_up_display(player);
-
-enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
+enum ERROR_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
 
     printf("[LEVEL ONE]\n");
 
@@ -23,6 +21,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
 
     ALLEGRO_EVENT_QUEUE* queue;
     ALLEGRO_TIMER* timer;
+    ALLEGRO_FONT* HUDfont;
 
     ALLEGRO_EVENT event;
     ALLEGRO_KEYBOARD_STATE keyboardState;
@@ -45,6 +44,8 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
 
 
     //const char* levelOneMusicSampleFilenpath = "assets/menu/Cirno_Fortress_Stage_1.wav";
+    
+
 
     //------------------ chequeo rrores de inicializacion de  Allegro ----------------------//
 
@@ -59,6 +60,11 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
 
     //levelOneMusic = al_create_sample_instance(levelOneMusicSample);
 
+    HUDfont = al_load_font(FONT_FILE_PATH, HUD_FONT_SIZE, NO_FLAGS);
+    if (HUDfont == NULL) {
+        fprintf(stdout, "Failed to load: %s\n", FONT_FILE_PATH);
+        return BAD_ASSET;
+    }
 
     queue = al_create_event_queue();
     if (queue == NULL) {
@@ -100,81 +106,75 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
         al_wait_for_event(queue, &event);
 
 
-
-
-        /*if (event.type == ALLEGRO_EVENT_TIMER) {
-            time++;
-            al_clear_to_color(BLACK);
-            update_player(player, keyboardState, &laser);
-            enemy_movement_1(enemy, &enemyDirection, &downFlag, mostLeftEnemy, mostRightEnemy);
-            update_laser(&laser, enemy, &mostRightEnemy, &mostLeftEnemy, enemyLasers, shields);
-            draw_laser(laser);
-            al_draw_bitmap(player->bitmap, player->x, PLAYERY, 0);
-            draw_all_enemies(enemy);
-            if (time == 50) {
-                start_enemy_shot(enemyLasers, decide_enemy_shot(enemy));
-                time = 0;
-            }
-            update_enemy_shot(enemyLasers, player, shields);
-            draw_enemy_laser(enemyLasers);
-            draw_shields(shields);
-            al_flip_display();
-        }*/
-        ///////////////////////////////////////////////////////////////////////////////////ARRIBA FUNCIONA OK
-
         switch (event.type) {
 
         case ALLEGRO_EVENT_TIMER:
-            time++;
-            al_clear_to_color(BLACK);
+
+            //UPDATE SPRITES 
             update_player(player, keyboardState, &laser);
             enemy_movement_1(enemy, &enemyDirection, &downFlag, mostLeftEnemy, mostRightEnemy);
-            update_laser(&laser, enemy, &mostRightEnemy, &mostLeftEnemy, enemyLasers, shields);
-            draw_laser(laser);
-            al_draw_bitmap(player->bitmap, player->x, PLAYERY, 0);
-            draw_all_enemies(enemy);
-            if (time == 50) {
+            update_laser(player, &laser, enemy, &mostRightEnemy, &mostLeftEnemy, enemyLasers, shields);
+            time++; // cada cuanto diapara
+            if (time == 35) {
                 start_enemy_shot(enemyLasers, decide_enemy_shot(enemy));
                 time = 0;
             }
             update_enemy_shot(enemyLasers, player, shields);
+            if (player->lives == 0) {
+                draw_lose_screen();
+                player->lives--;
+                levelOneLoop = false;
+                return QUIT_TO_MENU;
+            }
+
+            //DRAWING
+
+            al_clear_to_color(BLACK);
+            al_draw_bitmap(player->bitmap, player->x, PLAYERY, 0);
+            draw_all_enemies(enemy);
+            draw_laser(laser);
             draw_enemy_laser(enemyLasers);
             draw_shields(shields);
+            draw_HUD(player, HUDfont);
+
             al_flip_display();
             break;
 
         case ALLEGRO_EVENT_DISPLAY_CLOSE:
-            printf("CERRE EL DIAPLAY");
 
             levelOneLoop = false;
             levelOneOption = QUIT_GAME;
             break;
 
         case ALLEGRO_EVENT_KEY_DOWN:
-            printf("TOQUE UNA TECLA!");
             switch (event.keyboard.keycode) {
+
             case ALLEGRO_KEY_Q:
             case ALLEGRO_KEY_ESCAPE:
                 levelOneOption = QUIT_GAME;
                 levelOneLoop = false;
                 break;
+
             case ALLEGRO_KEY_RIGHT:
             case ALLEGRO_KEY_D:
-                printf("TOQUE LA DERECHA!\n");
                 player->state = MOVING_RIGHT;
                 break;
+
             case ALLEGRO_KEY_LEFT:
             case ALLEGRO_KEY_A:
                 player->state = MOVING_LEFT;
                 break;
+
             case ALLEGRO_KEY_SPACE:
                 shoot_laser(player, &laser);
                 break;
             }
             break;
+
+
+
         case ALLEGRO_EVENT_KEY_UP: // SOLTO LA TECLA DE MOVERSE
             switch (event.keyboard.keycode) {
-                printf("KEY UP!\n");
             case ALLEGRO_KEY_RIGHT:
             case ALLEGRO_KEY_D: // LOGICA PARA QUE NO PARE CUANDO SOLTAS CUALQUIER TECLA
                 if (player->state == MOVING_LEFT) {
@@ -206,7 +206,7 @@ enum ERROR_OPTIONS_E level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
     //al_stop_sample_instance(levelOneMusic);
 
 
-    al_destroy_display(display);
+    //al_destroy_display(display);
     //al_destroy_sample(levelOneMusicSample);
     //al_destroy_sample_instance(levelOneMusic);
     al_destroy_event_queue(queue);

@@ -28,11 +28,13 @@ int main(){
     }
 
 
-    //start_menu(display);
+    start_menu(display);
     level_one(display, player);
 
-
+    al_destroy_display(display);
     destroy_allegro();
+
+    printf("HOLA!");
     return 0;
 }
 
