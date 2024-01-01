@@ -131,7 +131,7 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
             }
             mothership.timer++;
             printf("mothership.timer: %d\n", mothership.timer);
-            if ((mothership.timer == 200) && (mothership.isAlive == false)) {
+            if ((mothership.timer == MOTHERSHIP_FREQUENCY_TIMER) && (mothership.isAlive == false)) {
                 printf("AParecioEL MOTHERSHIP!");
                 reset_mothership(&mothership);
             }

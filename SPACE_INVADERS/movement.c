@@ -312,10 +312,10 @@ void update_mothership(mothership_t* mothership) {
 		switch (mothership->state)
 		{
 		case MOVING_LEFT:
-			mothership->x -= 2;
+			mothership->x -= 1.2;
 			break;
 		case MOVING_RIGHT:
-			mothership->x += 2;
+			mothership->x += 1.2;
 			break;
 		}
 		if ((mothership->x > DISPLAY_WIDTH + 200) || (mothership->x < -200)) { // si se va de la pantalla no la updateo mas
