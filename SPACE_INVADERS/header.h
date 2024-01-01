@@ -17,6 +17,10 @@ enum LEVEL_OPTIONS_E { NO_ERROR_START_GAME, DIFFICULTY, SCOREBOARD, QUIT_GAME, R
 #define ENEMY_WIDTH 51
 #define ENEMY_HEIGHT 38
 
+#define MOTHERSHIP_WIDTH 64
+#define MOTHERSHIP_HEIGHT 28
+
+
 #define LEVEL1_ROWS 5
 #define LEVEL1_COLS 8
 
@@ -54,7 +58,7 @@ typedef struct{
 	float x;
 	unsigned int score;
 	unsigned int lives;
-	enum PLAYER_STATUS_E state;
+	enum SPACESHIP_STATUS_E state;
 	ALLEGRO_BITMAP* bitmap;
 } playerStatus;
 
@@ -83,5 +87,14 @@ typedef struct {
 	float y;
 	int health;
 } shield_t;
+
+typedef struct {
+	float x;
+	float y;
+	ALLEGRO_BITMAP* bitmap;
+	enum SPACESHIP_STATUS_E state;
+	bool isAlive;
+	unsigned int timer;
+} mothership_t;
 
 #endif // !__HEADER__

@@ -78,7 +78,10 @@ void shoot_laser(playerStatus* player, laser_t* laser) {
 	laser->y = PLAYERY;
 }
 
-void update_laser(playerStatus* player, laser_t* laser, enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus** mostRight, enemyStatus** mostLeft, enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH]) {
+void update_laser(playerStatus* player, laser_t* laser,
+				enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus** mostRight, enemyStatus** mostLeft,
+				enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH],
+				mothership_t* mothership) {
 	unsigned int i, j, k;
 
 	laser->y -= 10;
@@ -141,7 +144,15 @@ void update_laser(playerStatus* player, laser_t* laser, enemyStatus enemy[LEVEL1
 				}
 			}
 		}
+		if ((mothership->isAlive) && 
+			(laser->x > mothership->x) && (laser->x < mothership->x + MOTHERSHIP_WIDTH) &&
+			(laser->y > mothership->y) && (laser->y < mothership->y + MOTHERSHIP_HEIGHT) ) { //choca con la mothership
 
+			mothership->isAlive = false;
+			laser->moving = false;
+			player->score += 5000;
+			mothership->timer = 0;
+		}
 	}
 }
 
@@ -294,6 +305,24 @@ void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], playerS
 		}
 	}
 	
+}
+
+void update_mothership(mothership_t* mothership) {
+	if (mothership->isAlive) {
+		switch (mothership->state)
+		{
+		case MOVING_LEFT:
+			mothership->x -= 2;
+			break;
+		case MOVING_RIGHT:
+			mothership->x += 2;
+			break;
+		}
+		if ((mothership->x > DISPLAY_WIDTH + 200) || (mothership->x < -200)) { // si se va de la pantalla no la updateo mas
+			mothership->isAlive = false;
+			mothership->timer = 0;
+		}
+	}
 }
 
 

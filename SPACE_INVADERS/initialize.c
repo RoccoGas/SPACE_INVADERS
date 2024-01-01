@@ -73,3 +73,30 @@ bool init_all_shields(shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX
         }
     }
 }
+
+bool init_mothership(mothership_t* mothership) {
+    srand(time(NULL));
+    mothership->bitmap = al_load_bitmap("sprites/mothership2.png");
+    if (mothership->bitmap == NULL) {
+        fprintf(stdout, "Failed to load mothership bitmap\n");
+        return false;
+    }
+    mothership->state = NOT_MOVING;
+    mothership->isAlive = false; // para que no se vea al principio
+    mothership->y = 50;
+    mothership->timer = 0;
+}
+
+void reset_mothership(mothership_t* mothership) {
+    srand(time(NULL));
+    mothership->isAlive = true;
+    int random = rand() % 2; //para que vaya a veces de dercha a izq y vice
+    if (random == 0) {
+        mothership->x = 0 - MOTHERSHIP_WIDTH;
+        mothership->state = MOVING_RIGHT;
+    }
+    else {
+        mothership->x = DISPLAY_WIDTH;
+        mothership->state = MOVING_LEFT;
+    }
+}

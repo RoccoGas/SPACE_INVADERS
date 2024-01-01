@@ -140,7 +140,7 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
                     DISPLAY_WIDTH / 2,
                     0.6 * DISPLAY_HEIGHT ,
                     ALLEGRO_ALIGN_CENTER,
-                    "Difficulty");
+                    "Dificulty");
             }
             else { // Blanco si no esta el mouse sobre el texto 
 
@@ -188,7 +188,6 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
                     "Quit");
             }
             /// /// /// /// /// /// /// /// /// /// /// /// 
-            printf("menuOptionCycle: %d\n", menuOptionCycle);
             /// /// /// /// /// /// /// /// /// /// /// /// 
             /// /// /// /// /// /// /// /// /// /// /// /// 
             switch (menuOptionCycle) {

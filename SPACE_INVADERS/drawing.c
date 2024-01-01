@@ -31,6 +31,12 @@ void draw_enemy_laser(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
 	}
 }
 
+void draw_mothership(mothership_t* mothership) {
+	if (mothership->isAlive) {
+		al_draw_bitmap(mothership->bitmap, mothership->x, mothership->y, 0);
+	}
+}
+
 void draw_shields(shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH]) {
 	int i, k, j;
 	for (k = 0; k < MAX_SHIELD_AMOUNT; k++) {

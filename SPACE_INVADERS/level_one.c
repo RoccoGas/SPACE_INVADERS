@@ -30,13 +30,14 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
     laser_t laser;
     enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT];
     shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH];
+    mothership_t mothership;
 
 
     laser.moving = false;
     init_all_enemies1(enemy, ENEMY1_FILE_PATH);
     init_enemy_lasers(enemyLasers);
     init_all_shields(shields);
-
+    init_mothership(&mothership);
     unsigned int enemyDirection = DEFAULT_ENEMY_DIRECTION;
     unsigned int downFlag = 1; //para que no se vaya para abajo al principio
     enemyStatus* mostLeftEnemy = &enemy[0][0];
@@ -100,6 +101,7 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
     enum LEVEL_OPTIONS_E levelOneOption = NO_ERROR_START_GAME;
     int shooting = 0; //solucion momentanea al doble disparo
     unsigned int time = 0;
+
     while (levelOneLoop) {
 
         al_get_keyboard_state(&keyboardState);
@@ -113,7 +115,8 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
             //UPDATE SPRITES 
             update_player(player, keyboardState, &laser);
             enemy_movement_1(enemy, &enemyDirection, &downFlag, mostLeftEnemy, mostRightEnemy);
-            update_laser(player, &laser, enemy, &mostRightEnemy, &mostLeftEnemy, enemyLasers, shields);
+            update_laser(player, &laser, enemy, &mostRightEnemy, &mostLeftEnemy, enemyLasers, shields, &mothership);
+            update_mothership(&mothership);
             time++; // cada cuanto diapara
             if (time == 35) {
                 start_enemy_shot(enemyLasers, decide_enemy_shot(enemy));
@@ -126,6 +129,12 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
                 levelOneLoop = false; //GIT!!!
                 return QUIT_TO_MENU;
             }
+            mothership.timer++;
+            printf("mothership.timer: %d\n", mothership.timer);
+            if ((mothership.timer == 200) && (mothership.isAlive == false)) {
+                printf("AParecioEL MOTHERSHIP!");
+                reset_mothership(&mothership);
+            }
 
             //DRAWING
 
@@ -135,6 +144,7 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
             draw_laser(laser);
             draw_enemy_laser(enemyLasers);
             draw_shields(shields);
+            draw_mothership(&mothership);
             draw_HUD(player, HUDfont);
 
             al_flip_display();
