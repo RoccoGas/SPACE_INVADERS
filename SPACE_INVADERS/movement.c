@@ -90,7 +90,8 @@ void update_laser(playerStatus* player, laser_t* laser, enemyStatus enemy[LEVEL1
 	if (laser->moving) {
 		for (i = 0; i < MAX_ENEMY_LASER_AMOUNT; i++) { // Veo si choca con un laser enemigo
 			if (enemyLasers[i].moving) {
-				if ((enemyLasers[i].x -(LASER_WIDTH/2 + 3) <= laser->x) && (enemyLasers[i].x + (LASER_WIDTH / 2 + 3) >= laser->x) && ( laser->y >  enemyLasers[i].y) && ( laser->y < enemyLasers[i].y + LASER_LENGTH)) {
+				if ((enemyLasers[i].x -(LASER_WIDTH/2 + 3) <= laser->x) && (enemyLasers[i].x + (LASER_WIDTH / 2 + 3) >= laser->x) && 
+					( laser->y >  enemyLasers[i].y) && ( laser->y < enemyLasers[i].y + LASER_LENGTH)) { // chocaron los lasers
 					enemyLasers[i].moving = false;
 					laser->moving = false;
 					printf("CHOCARON LOS LASERS!\n");
@@ -100,7 +101,9 @@ void update_laser(playerStatus* player, laser_t* laser, enemyStatus enemy[LEVEL1
 		}
 		for (i = 0; i < LEVEL1_ROWS; i++) {
 			for (j = 0; j < LEVEL1_COLS; j++) {
-				if ((laser->x > enemy[i][j].x) && (laser->x < enemy[i][j].x + ENEMY_WIDTH) && (laser->y > enemy[i][j].y) && (laser->y < enemy[i][j].y + ENEMY_HEIGHT) && (enemy[i][j].alive)) { //Choco con enemigo
+				if ((laser->x > enemy[i][j].x) && (laser->x < enemy[i][j].x + ENEMY_WIDTH) && 
+					(laser->y > enemy[i][j].y) && (laser->y < enemy[i][j].y + ENEMY_HEIGHT) && 
+					(enemy[i][j].alive)) { //Choco con enemigo
 					laser->moving = false;
 					enemy[i][j].alive = false;
 					player->score += 100;
@@ -128,7 +131,10 @@ void update_laser(playerStatus* player, laser_t* laser, enemyStatus enemy[LEVEL1
 		for (k = 0; k < MAX_SHIELD_AMOUNT; k++) {
 			for (i = 0; i < MAX_SHIELD_HEIGHT; i++) {
 				for (j = 0; j < MAX_SHIELD_LENGTH; j++) { //Cada for genera un escudo "grande"
-					if ((shields[k][i][j].health > 0) && (laser->x > shields[k][i][j].x) && (laser->x < shields[k][i][j].x + INDIVIDUAL_SHIELD_THICKNESS) && (laser->y  > shields[k][i][j].y) && (laser->y < shields[k][i][j].y + INDIVIDUAL_SHIELD_THICKNESS) && ((laser->moving))) { // choco el laser contra el escudo
+					if ((shields[k][i][j].health > 0) && 
+						(laser->x > shields[k][i][j].x) && (laser->x < shields[k][i][j].x + INDIVIDUAL_SHIELD_THICKNESS) && 
+						(laser->y  > shields[k][i][j].y) && (laser->y < shields[k][i][j].y + INDIVIDUAL_SHIELD_THICKNESS) && 
+						((laser->moving))) { // choco el laser contra el escudo
 						laser->moving = false;
 						shields[k][i][j].health--;
 					}
@@ -259,7 +265,9 @@ void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], playerS
 		if (enemyLasers[n].moving) { // actualizo posicion
 			enemyLasers[n].y += 5;
 		}
-		if ((enemyLasers[n].x > player->x) && (enemyLasers[n].x < player->x + SPACESHIP_SIZE) && (enemyLasers[n].y > PLAYERY) && (enemyLasers[n].y < PLAYERY + SPACESHIP_SIZE) && ((enemyLasers[n].moving))) {// choca contra el jugador
+		if (((enemyLasers[n].moving)) && 
+			(enemyLasers[n].x > player->x) && (enemyLasers[n].x < player->x + SPACESHIP_SIZE) && 
+			(enemyLasers[n].y > PLAYERY) && (enemyLasers[n].y < PLAYERY + SPACESHIP_SIZE)) {// choca contra el jugador
 			player->lives--;
 			destroy_all_enemy_lasers(enemyLasers);
 			al_rest(0.1);

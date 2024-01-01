@@ -8,7 +8,7 @@
 #include "initialize.h"
 #include "drawing.h"
 
-enum ERROR_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
+enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
 
     printf("[LEVEL ONE]\n");
 
@@ -97,7 +97,7 @@ enum ERROR_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
 
     bool levelOneLoop = true; // Este es el "game loop" del nivel 1
 
-    enum ERROR_OPTIONS_E levelOneOption = NO_ERROR_START_GAME;
+    enum LEVEL_OPTIONS_E levelOneOption = NO_ERROR_START_GAME;
     int shooting = 0; //solucion momentanea al doble disparo
     unsigned int time = 0;
     while (levelOneLoop) {
@@ -123,7 +123,7 @@ enum ERROR_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
             if (player->lives == 0) {
                 draw_lose_screen();
                 player->lives--;
-                levelOneLoop = false;
+                levelOneLoop = false; //GIT!!!
                 return QUIT_TO_MENU;
             }
 

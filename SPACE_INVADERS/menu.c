@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 
-enum ERROR_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
+enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
     printf("[START MENU]\n");
 
     al_reserve_samples(1); // Para la musica del menu
@@ -28,6 +28,7 @@ enum ERROR_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
     const char* bitmapSpaceFilepath = "assets/menu/space3.jpg";
     const char* fontFilepath = "assets/menu/space_invaders_font.ttf";
     const char* menuMusicSampleFilenpath = "assets/menu/Cirno_Fortress_Stage_1.wav";
+
 
     //------------------ chequeo rrores de inicializacion de  Allegro ----------------------//
 
@@ -94,7 +95,8 @@ enum ERROR_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
     //-------------------------- Game loop del menu ---------------------------//
 
     bool menuLoop = true; // Este es el "game loop" solo del menu
-    enum ERROR_OPTIONS_E menuOption = NO_ERROR_START_GAME;
+    enum LEVEL_OPTIONS_E menuOption = NO_ERROR_START_GAME;
+    char menuOptionCycle = 0;
     while (menuLoop) {
 
         al_get_next_event(queue, &event);
@@ -112,13 +114,7 @@ enum ERROR_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
                 (DISPLAY_WIDTH / 2) - (al_get_bitmap_width(bitmapBackround) / 2),
                 20,
                 NO_FLAGS);
-            /*al_draw_text(font,  
-                GREY,
-                DISPLAY_WIDTH / 2,
-                DISPLAY_HEIGHT / 3,
-                ALLEGRO_ALIGN_CENTER,
-                "SPACE INVADERS!");*/
-            if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) &&
+            if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) && // cambia de color si el mouse esta sobre la opcion 
                 (mouseState.y > 0.5f * DISPLAY_HEIGHT) && (mouseState.y < (0.6f * DISPLAY_HEIGHT))) {
                 al_draw_text(font,
                     GREEN,
@@ -127,7 +123,7 @@ enum ERROR_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
                     ALLEGRO_ALIGN_CENTER,
                     "Start");
             }
-            else {
+            else { // Blanco si no esta el mouse sobre el texto 
 
                 al_draw_text(font,
                     WHITE,
@@ -153,6 +149,7 @@ enum ERROR_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
                     ALLEGRO_ALIGN_CENTER,
                     "Quit");
             }
+            printf("menuOptionCycle: %d\n", menuOptionCycle);
             al_flip_display();
             break;
         case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
@@ -170,17 +167,27 @@ enum ERROR_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
         case ALLEGRO_EVENT_KEY_DOWN:
             switch (event.keyboard.keycode) {
             case ALLEGRO_KEY_Q:
-            case ALLEGRO_KEY_ESCAPE:
+            case ALLEGRO_KEY_ESCAPE: // sale del juego
                 menuOption = QUIT_GAME;
                 menuLoop = false;
                 break;
+            case ALLEGRO_KEY_UP:
+            case ALLEGRO_KEY_W:
+                menuOptionCycle++; // cambia que opcion esta "activa para seleccionar"
+                if (menuOptionCycle > 3) {
+                    menuOptionCycle = 0;
+                }
+                break;
+            case ALLEGRO_KEY_DOWN:
             case ALLEGRO_KEY_S:
-                menuOption = NO_ERROR_START_GAME;
-                menuLoop = false;
+                menuOptionCycle--; // cambia que opcion esta "activa para seleccionar"
+                if (menuOptionCycle < 0) {
+                    menuOptionCycle = 3;
+                }
                 break;
             }
-        default:
-            break;
+
+
         }
 
     }
@@ -201,7 +208,7 @@ enum ERROR_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
 
 //----------------------------------------------------------------------------------------------------------
 
-enum ERROR_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de comienzo solo, que no genera un nuevo display, usa el viejo
+enum LEVEL_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de comienzo solo, que no genera un nuevo display, usa el viejo
     printf("Entering [PAUSE MENU]\n");
 
     al_set_target_backbuffer(display);
@@ -290,7 +297,7 @@ enum ERROR_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de co
     //-------------------------- Game loop del menu ---------------------------//
 
     bool menuLoop = true; // Este es el "game loop" solo del menu
-    enum ERROR_OPTIONS_E menuOption = NO_ERROR_START_GAME; // Esta variable se devuelve para informar q opcion sucedio
+    enum LEVEL_OPTIONS_E menuOption = NO_ERROR_START_GAME; // Esta variable se devuelve para informar q opcion sucedio
     while (menuLoop) {
 
         al_get_next_event(queue, &event);
