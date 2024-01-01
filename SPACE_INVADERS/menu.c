@@ -106,7 +106,7 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
         switch (event.type) {
         case ALLEGRO_EVENT_DISPLAY_CLOSE:
             menuLoop = false;
-            menuOption = QUIT_GAME;
+            menuOption =  QUIT_GAME;
             break;
         case ALLEGRO_EVENT_TIMER:
             al_draw_bitmap(bitmapSpace, -500, 0, NO_FLAGS);
@@ -132,12 +132,50 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
                     ALLEGRO_ALIGN_CENTER,
                     "Start");
             }
+            /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
+            if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) && // cambia de color si el mouse esta sobre la opcion 
+                (mouseState.y > 0.6f * DISPLAY_HEIGHT) && (mouseState.y < (0.7f * DISPLAY_HEIGHT))) {
+                al_draw_text(font,
+                    GREEN,
+                    DISPLAY_WIDTH / 2,
+                    0.6 * DISPLAY_HEIGHT ,
+                    ALLEGRO_ALIGN_CENTER,
+                    "Difficulty");
+            }
+            else { // Blanco si no esta el mouse sobre el texto 
+
+                al_draw_text(font,
+                    WHITE,
+                    DISPLAY_WIDTH / 2,
+                    0.6 * DISPLAY_HEIGHT,
+                    ALLEGRO_ALIGN_CENTER,
+                    "Dificulty");
+            }
+            /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
             if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
-                (mouseState.y > 0.75f * DISPLAY_HEIGHT) && (mouseState.y < (0.85f * DISPLAY_HEIGHT))) {
+                (mouseState.y > 0.7f * DISPLAY_HEIGHT) && (mouseState.y < (0.8f * DISPLAY_HEIGHT))) {
+                al_draw_text(font,
+                    GREEN,
+                    DISPLAY_WIDTH / 2,
+                    0.7f * DISPLAY_HEIGHT,
+                    ALLEGRO_ALIGN_CENTER,
+                    "Scoreboard");
+            }
+            else {
+                al_draw_text(font,
+                    WHITE,
+                    0.5 * DISPLAY_WIDTH,
+                    0.7 * DISPLAY_HEIGHT,
+                    ALLEGRO_ALIGN_CENTER,
+                    "Scoreboard");
+            }
+            /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
+            if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
+                (mouseState.y > 0.8f * DISPLAY_HEIGHT) && (mouseState.y < (0.9f * DISPLAY_HEIGHT))) {
                 al_draw_text(font,
                     RED,
                     DISPLAY_WIDTH / 2,
-                    0.75f * DISPLAY_HEIGHT,
+                    0.8f * DISPLAY_HEIGHT,
                     ALLEGRO_ALIGN_CENTER,
                     "Quit");
             }
@@ -145,21 +183,50 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
                 al_draw_text(font,
                     WHITE,
                     0.5 * DISPLAY_WIDTH,
-                    0.75 * DISPLAY_HEIGHT,
+                    0.8 * DISPLAY_HEIGHT,
                     ALLEGRO_ALIGN_CENTER,
                     "Quit");
             }
+            /// /// /// /// /// /// /// /// /// /// /// /// 
             printf("menuOptionCycle: %d\n", menuOptionCycle);
+            /// /// /// /// /// /// /// /// /// /// /// /// 
+            /// /// /// /// /// /// /// /// /// /// /// /// 
+            switch (menuOptionCycle) {
+            case 0: // caso "Start"
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Start");
+                break;
+            case 1:
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, 0.6 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Dificulty");
+                break;
+            case 2:
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, 0.7 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Scoreboard");
+
+                break;
+            case 3:
+                al_draw_text(font, RED, DISPLAY_WIDTH / 2, 0.8 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Quit");
+                break;
+            }
+
             al_flip_display();
             break;
-        case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+        case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN: // clickea una opcion del menu
             if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) &&
                 (mouseState.y > 0.5f * DISPLAY_HEIGHT) && (mouseState.y < (0.6f * DISPLAY_HEIGHT))) {
                 menuOption = NO_ERROR_START_GAME;
                 menuLoop = false;
             }
             else if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
-                (mouseState.y > 0.75f * DISPLAY_HEIGHT) && (mouseState.y < (0.85f * DISPLAY_HEIGHT))) {
+                (mouseState.y > 0.6f * DISPLAY_HEIGHT) && (mouseState.y < (0.7f * DISPLAY_HEIGHT))) {
+                menuOption = DIFFICULTY;
+                menuLoop = false;
+            }
+            else if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
+                (mouseState.y > 0.7f * DISPLAY_HEIGHT) && (mouseState.y < (0.8f * DISPLAY_HEIGHT))) {
+                menuOption = SCOREBOARD;
+                menuLoop = false;
+            }
+            else if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
+                (mouseState.y > 0.8f * DISPLAY_HEIGHT) && (mouseState.y < (0.9f * DISPLAY_HEIGHT))) {
                 menuOption = QUIT_GAME;
                 menuLoop = false;
             }
@@ -171,20 +238,35 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
                 menuOption = QUIT_GAME;
                 menuLoop = false;
                 break;
-            case ALLEGRO_KEY_UP:
-            case ALLEGRO_KEY_W:
+            case ALLEGRO_KEY_DOWN:
+            case ALLEGRO_KEY_S:
                 menuOptionCycle++; // cambia que opcion esta "activa para seleccionar"
                 if (menuOptionCycle > 3) {
                     menuOptionCycle = 0;
                 }
                 break;
-            case ALLEGRO_KEY_DOWN:
-            case ALLEGRO_KEY_S:
+            case ALLEGRO_KEY_UP:
+            case ALLEGRO_KEY_W:
                 menuOptionCycle--; // cambia que opcion esta "activa para seleccionar"
                 if (menuOptionCycle < 0) {
                     menuOptionCycle = 3;
                 }
                 break;
+            case ALLEGRO_KEY_ENTER: 
+                switch (menuOptionCycle){
+                case 0:
+                        return NO_ERROR_START_GAME;
+                        break;
+                case 1:
+                    return DIFFICULTY;
+                    break;
+                case 2:
+                    return SCOREBOARD;
+                    break;
+                case 3:
+                    return QUIT_GAME;
+                    break;
+                }
             }
 
 
