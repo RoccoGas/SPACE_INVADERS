@@ -29,6 +29,8 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
     const char* fontFilepath = "assets/menu/space_invaders_font.ttf";
     const char* menuMusicSampleFilenpath = "assets/menu/Cirno_Fortress_Stage_1.wav";
 
+    enum DIFFICULTY_OPTIONS_E difficulty = EASY;
+
 
     //------------------ chequeo rrores de inicializacion de  Allegro ----------------------//
 
@@ -225,11 +227,13 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
                     return NO_ERROR_START_GAME;
                     break;
                 case 1:
-                    al_stop_sample_instance(menuMusic);
+                    al_start_timer(timer);
+                    difficulty_menu(display, &difficulty);
+                    al_flush_event_queue(queue);
+                    al_start_timer(timer);
                     return DIFFICULTY;
                     break;
                 case 2:
-                    al_stop_sample_instance(menuMusic);
                     return SCOREBOARD;
                     break;
                 case 3:
@@ -543,7 +547,7 @@ enum LEVEL_OPTIONS_E difficulty_menu(ALLEGRO_DISPLAY* display, enum DIFFICULTY_M
             case ALLEGRO_KEY_DOWN:
             case ALLEGRO_KEY_S:
                 difficultyMenuOptionCycle++; // cambia que opcion esta "activa para seleccionar"
-                if (difficultyMenuOptionCycle > 1) {
+                if (difficultyMenuOptionCycle > 3) {
                     difficultyMenuOptionCycle = 0;
                 }
                 break;
@@ -551,18 +555,27 @@ enum LEVEL_OPTIONS_E difficulty_menu(ALLEGRO_DISPLAY* display, enum DIFFICULTY_M
             case ALLEGRO_KEY_W:
                 difficultyMenuOptionCycle--; // cambia que opcion esta "activa para seleccionar"
                 if (difficultyMenuOptionCycle < 0) {
-                    difficultyMenuOptionCycle = 1;
+                    difficultyMenuOptionCycle = 3;
                 }
                 break;
             case ALLEGRO_KEY_ENTER:
                 switch (difficultyMenuOptionCycle) {
                 case 0:
-                    menuOption = RESUME_GAME;
+                    *difficulty = EASY;
                     menuLoop = false;
                     break;
                 case 1:
-                    menuOption = QUIT_TO_MENU;
+                    *difficulty = MEDIUM;
                     menuLoop = false;
+                    break;
+                case 2:
+                    *difficulty = HARD;
+                    menuLoop = false;
+                    break;
+                case 3:
+                    *difficulty = HELL;
+                    menuLoop = false;
+                    break;
                 }
 
             }
@@ -572,27 +585,63 @@ enum LEVEL_OPTIONS_E difficulty_menu(ALLEGRO_DISPLAY* display, enum DIFFICULTY_M
             al_clear_to_color(BLACK);
             al_draw_text(font, YELLOW, 0.5 * DISPLAY_WIDTH, 0.1 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Difficulty MENU");
 
-            if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) &&
+            if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) && // cambia de color si el mouse esta sobre la opcion 
                 (mouseState.y > 0.5f * DISPLAY_HEIGHT) && (mouseState.y < (0.6f * DISPLAY_HEIGHT))) {
+
                 al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "EASY");
             }
-            else {
+            else { // Blanco si no esta el mouse sobre el texto 
+
                 al_draw_text(font, WHITE, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "EASY");
             }
+            /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
+            if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) && // cambia de color si el mouse esta sobre la opcion 
+                (mouseState.y > 0.6f * DISPLAY_HEIGHT) && (mouseState.y < (0.7f * DISPLAY_HEIGHT))) {
+
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, 0.6 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "MEDIUM");
+            }
+            else { // Blanco si no esta el mouse sobre el texto 
+
+                al_draw_text(font, WHITE, DISPLAY_WIDTH / 2, 0.6 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "MEDIUM");
+            }
+            /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
             if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
-                (mouseState.y > 0.75f * DISPLAY_HEIGHT) && (mouseState.y < (0.85f * DISPLAY_HEIGHT))) {
-                al_draw_text(font, RED, DISPLAY_WIDTH / 2, 0.75f * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Quit to main menu");
+                (mouseState.y > 0.7f * DISPLAY_HEIGHT) && (mouseState.y < (0.8f * DISPLAY_HEIGHT))) {
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, 0.7 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "HARD");
+
             }
             else {
-                al_draw_text(font, WHITE, 0.5 * DISPLAY_WIDTH, 0.75 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Quit to main menu");
-            }
+                al_draw_text(font, WHITE, DISPLAY_WIDTH / 2, 0.7 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "HARD");
 
+            }
+            /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
+            if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
+                (mouseState.y > 0.8f * DISPLAY_HEIGHT) && (mouseState.y < (0.9f * DISPLAY_HEIGHT))) {
+
+                al_draw_text(font, RED, DISPLAY_WIDTH / 2, 0.8 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "HELL");
+
+            }
+            else {
+                al_draw_text(font, WHITE, DISPLAY_WIDTH / 2, 0.8 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "HELL");
+
+            }
+            /// /// /// /// /// /// /// /// /// /// /// /// 
+            /// /// /// /// /// /// /// /// /// /// /// /// 
+            /// /// /// /// /// /// /// /// /// /// /// /// 
             switch (difficultyMenuOptionCycle) {
-            case 0:
-                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Resume");
+            case 0: // caso "Start"
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "EASY");
                 break;
             case 1:
-                al_draw_text(font, RED, DISPLAY_WIDTH / 2, 0.75f * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Quit to main menu");
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, 0.6 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "MEDIUM");
+                break;
+            case 2:
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, 0.7 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "HARD");
+
+                break;
+            case 3:
+                al_draw_text(font, RED, DISPLAY_WIDTH / 2, 0.8 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "HELL");
+                break;
             }
 
             al_flip_display();
