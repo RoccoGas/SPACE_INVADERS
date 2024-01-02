@@ -383,6 +383,7 @@ enum LEVEL_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de co
 
     bool menuLoop = true; // Este es el "game loop" solo del menu
     enum LEVEL_OPTIONS_E menuOption = NO_ERROR_START_GAME; // Esta variable se devuelve para informar q opcion sucedio
+    char pauseMenuOptionCycle = 0;
     while (menuLoop) {
 
         al_wait_for_event(queue, &event);
@@ -400,53 +401,65 @@ enum LEVEL_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de co
                 menuOption = RESUME_GAME;
                 menuLoop = false;
                 break;
+            case ALLEGRO_KEY_DOWN:
+            case ALLEGRO_KEY_S:
+                pauseMenuOptionCycle++; // cambia que opcion esta "activa para seleccionar"
+                if (pauseMenuOptionCycle > 1) {
+                    pauseMenuOptionCycle = 0;
+                }
+                break;
+            case ALLEGRO_KEY_UP:
+            case ALLEGRO_KEY_W:
+                pauseMenuOptionCycle--; // cambia que opcion esta "activa para seleccionar"
+                if (pauseMenuOptionCycle < 0) {
+                    pauseMenuOptionCycle = 1;
+                }
+                break;
+            case ALLEGRO_KEY_ENTER:
+                switch (pauseMenuOptionCycle) {
+                case 0:
+                    menuOption = RESUME_GAME;
+                    menuLoop = false;
+                    break;
+                case 1:
+                    menuOption = QUIT_TO_MENU;
+                    menuLoop = false;
+                }
+                
             }
             break;
-        case ALLEGRO_EVENT_TIMER:
 
+        case ALLEGRO_EVENT_TIMER:
             al_clear_to_color(BLACK);
-            al_draw_text(font,
-                YELLOW,
-                0.5 * DISPLAY_WIDTH,
-                0.1 * DISPLAY_HEIGHT,
-                ALLEGRO_ALIGN_CENTER,
-                "PAUSE MENU");
+            al_draw_text(font, YELLOW, 0.5 * DISPLAY_WIDTH, 0.1 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "PAUSE MENU");
+
             if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) &&
                 (mouseState.y > 0.5f * DISPLAY_HEIGHT) && (mouseState.y < (0.6f * DISPLAY_HEIGHT))) {
-                al_draw_text(font,
-                    GREEN,
-                    DISPLAY_WIDTH / 2,
-                    DISPLAY_HEIGHT / 2,
-                    ALLEGRO_ALIGN_CENTER,
-                    "Resume");
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Resume");
             }
             else {
-                al_draw_text(font,
-                    WHITE,
-                    DISPLAY_WIDTH / 2,
-                    DISPLAY_HEIGHT / 2,
-                    ALLEGRO_ALIGN_CENTER,
-                    "Resume");
+                al_draw_text(font, WHITE, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Resume");
             }
             if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
                 (mouseState.y > 0.75f * DISPLAY_HEIGHT) && (mouseState.y < (0.85f * DISPLAY_HEIGHT))) {
-                al_draw_text(font,
-                    RED,
-                    DISPLAY_WIDTH / 2,
-                    0.75f * DISPLAY_HEIGHT,
-                    ALLEGRO_ALIGN_CENTER,
-                    "Quit to main menu");
+                al_draw_text(font, RED, DISPLAY_WIDTH / 2, 0.75f * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Quit to main menu");
             }
             else {
-                al_draw_text(font,
-                    WHITE,
-                    0.5 * DISPLAY_WIDTH,
-                    0.75 * DISPLAY_HEIGHT,
-                    ALLEGRO_ALIGN_CENTER,
-                    "Quit to main menu");
+                al_draw_text(font, WHITE, 0.5 * DISPLAY_WIDTH, 0.75 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Quit to main menu");
             }
+
+            switch (pauseMenuOptionCycle) {
+            case 0:
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Resume");
+                break;
+            case 1:
+                al_draw_text(font, RED, DISPLAY_WIDTH / 2, 0.75f * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Quit to main menu");
+            }
+
             al_flip_display();
             break;
+
+
         case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
             if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) &&
                 (mouseState.y > 0.5f * DISPLAY_HEIGHT) && (mouseState.y < (0.6f * DISPLAY_HEIGHT))) {
