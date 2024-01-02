@@ -14,9 +14,9 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
 
     al_reserve_samples(1); // Para la musica del menu
 
-    //ALLEGRO_FONT* font;
-    //ALLEGRO_SAMPLE* levelOneMusicSample;
-    //ALLEGRO_SAMPLE_INSTANCE* levelOneMusic;
+    ALLEGRO_FONT* font;
+    ALLEGRO_SAMPLE* levelOneMusicSample;
+    ALLEGRO_SAMPLE_INSTANCE* levelOneMusic;
 
 
     ALLEGRO_EVENT_QUEUE* queue;
@@ -44,7 +44,7 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
     enemyStatus* mostRightEnemy = &enemy[0][LEVEL1_COLS - 1];
 
 
-    //const char* levelOneMusicSampleFilenpath = "assets/menu/Cirno_Fortress_Stage_1.wav";
+    const char* levelOneMusicSampleFilenpath = "assets/menu/Cirno_Fortress_Stage_1.wav";
     
 
 
@@ -53,13 +53,13 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
 
 
 
-    //levelOneMusicSample = al_load_sample(levelOneMusicSampleFilenpath);
-    //if (levelOneMusicSample == NULL) {
-    //    fprintf(stdout, "Failed to load: %s\n", levelOneMusicSampleFilenpath);
-    //    return BAD_ASSET;
-    //}
+    levelOneMusicSample = al_load_sample(levelOneMusicSampleFilenpath);
+    if (levelOneMusicSample == NULL) {
+        fprintf(stdout, "Failed to load: %s\n", levelOneMusicSampleFilenpath);
+        return BAD_ASSET;
+    }
 
-    //levelOneMusic = al_create_sample_instance(levelOneMusicSample);
+    levelOneMusic = al_create_sample_instance(levelOneMusicSample);
 
     HUDfont = al_load_font(FONT_FILE_PATH, HUD_FONT_SIZE, NO_FLAGS);
     if (HUDfont == NULL) {
@@ -89,9 +89,9 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
     al_start_timer(timer);
 
 
-    /* al_attach_sample_instance_to_mixer(levelOneMusic, al_get_default_mixer());
-     al_set_sample_instance_playmode(levelOneMusic, ALLEGRO_PLAYMODE_LOOP);
-     al_play_sample_instance(levelOneMusic);*/
+     //al_attach_sample_instance_to_mixer(levelOneMusic, al_get_default_mixer());
+     //al_set_sample_instance_playmode(levelOneMusic, ALLEGRO_PLAYMODE_LOOP);
+     //al_play_sample_instance(levelOneMusic);
 
 
      //-------------------------- Game loop del nivel 1 ---------------------------//
@@ -124,15 +124,16 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
             }
             update_enemy_shot(enemyLasers, player, shields);
             if (player->lives == 0) {
+                al_stop_timer(timer);
                 draw_lose_screen();
+                al_start_timer(timer);
+
                 player->lives--;
                 levelOneLoop = false; //GIT!!!
                 return QUIT_TO_MENU;
             }
             mothership.timer++;
-            printf("mothership.timer: %d\n", mothership.timer);
             if ((mothership.timer == MOTHERSHIP_FREQUENCY_TIMER) && (mothership.isAlive == false)) {
-                printf("AParecioEL MOTHERSHIP!");
                 reset_mothership(&mothership);
             }
 
@@ -178,6 +179,13 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
             case ALLEGRO_KEY_SPACE:
                 shoot_laser(player, &laser);
                 break;
+            case ALLEGRO_KEY_P:
+                al_stop_sample_instance(levelOneMusic);
+                al_stop_timer(timer);
+                pause_menu(display);
+                al_flush_event_queue(queue);
+                al_start_timer(timer);
+                break;
             }
             break;
 
@@ -213,12 +221,12 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
 
     //carga player pos en su status
 
-    //al_stop_sample_instance(levelOneMusic);
+    /*al_stop_sample_instance(levelOneMusic);
 
 
-    //al_destroy_display(display);
-    //al_destroy_sample(levelOneMusicSample);
-    //al_destroy_sample_instance(levelOneMusic);
+    al_destroy_display(display);
+    al_destroy_sample(levelOneMusicSample);
+    al_destroy_sample_instance(levelOneMusic);*/
     al_destroy_event_queue(queue);
     al_destroy_timer(timer);
 

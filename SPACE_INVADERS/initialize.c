@@ -8,7 +8,7 @@
 
 bool init_player(playerStatus* player) {
     player->x = 20;
-    player->lives = 1;
+    player->lives = 3;
     player->score = 0;
     player->state = NOT_MOVING;
     player->bitmap = al_load_bitmap("sprites/Spaceshipf.png");
@@ -83,7 +83,7 @@ bool init_mothership(mothership_t* mothership) {
     }
     mothership->state = NOT_MOVING;
     mothership->isAlive = false; // para que no se vea al principio
-    mothership->y = 50;
+    mothership->y = 20;
     mothership->timer = 0;
 }
 

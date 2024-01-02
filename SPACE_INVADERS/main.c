@@ -28,7 +28,7 @@ int main(){
     }
 
 
-    //start_menu(display);
+    start_menu(display);
     level_one(display, player);
 
     al_destroy_display(display);

@@ -99,7 +99,7 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
     char menuOptionCycle = 0;
     while (menuLoop) {
 
-        al_get_next_event(queue, &event);
+        al_wait_for_event(queue, &event);
         al_get_keyboard_state(&keyboardState);
         al_get_mouse_state(&mouseState);
 
@@ -254,15 +254,19 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
             case ALLEGRO_KEY_ENTER: 
                 switch (menuOptionCycle){
                 case 0:
-                        return NO_ERROR_START_GAME;
-                        break;
+                    al_stop_sample_instance(menuMusic);
+                    return NO_ERROR_START_GAME;
+                    break;
                 case 1:
+                    al_stop_sample_instance(menuMusic);
                     return DIFFICULTY;
                     break;
                 case 2:
+                    al_stop_sample_instance(menuMusic);
                     return SCOREBOARD;
                     break;
                 case 3:
+                    al_stop_sample_instance(menuMusic);
                     return QUIT_GAME;
                     break;
                 }
@@ -299,6 +303,7 @@ enum LEVEL_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de co
     ALLEGRO_BITMAP* bitmapBackround;
     ALLEGRO_BITMAP* bitmapSpace;
     ALLEGRO_FONT* font;
+
     ALLEGRO_SAMPLE* menuMusicSample;
     ALLEGRO_SAMPLE_INSTANCE* menuMusic;
 
@@ -310,7 +315,7 @@ enum LEVEL_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de co
     ALLEGRO_MOUSE_STATE mouseState;
 
     const char* bitmapBackgroundFilepath = "assets/menu/space_invaders_logo.png";
-    const char* bitmapSpaceFilepath = "assets/menu/8bit_ocean.jfif";
+    const char* bitmapSpaceFilepath = "assets/menu/space3.jpg";
     const char* fontFilepath = "assets/menu/space_invaders_font.ttf";
     const char* menuMusicSampleFilenpath = "assets/menu/sweet_mystery_galaxy.wav";
 
@@ -342,7 +347,6 @@ enum LEVEL_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de co
 
     menuMusic = al_create_sample_instance(menuMusicSample);
 
-    //display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT); no lo uso xq utilizo el q ya esta
     if (display == NULL) {
         fprintf(stdout, "Failed to recive menu display \n ");
         return BAD_DISPLAY;
@@ -369,7 +373,7 @@ enum LEVEL_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de co
 
     al_start_timer(timer);
 
-    al_set_window_title(display, "Rocco's Mario =)");
+    al_set_window_title(display, "Pause menu");
 
     al_attach_sample_instance_to_mixer(menuMusic, al_get_default_mixer());
     al_set_sample_instance_playmode(menuMusic, ALLEGRO_PLAYMODE_LOOP);
@@ -381,7 +385,7 @@ enum LEVEL_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de co
     enum LEVEL_OPTIONS_E menuOption = NO_ERROR_START_GAME; // Esta variable se devuelve para informar q opcion sucedio
     while (menuLoop) {
 
-        al_get_next_event(queue, &event);
+        al_wait_for_event(queue, &event);
         al_get_keyboard_state(&keyboardState);
         al_get_mouse_state(&mouseState);
 
@@ -393,36 +397,20 @@ enum LEVEL_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de co
         case ALLEGRO_EVENT_KEY_DOWN:
             switch (event.keyboard.keycode) {
             case ALLEGRO_KEY_P:
-                menuLoop = false;
                 menuOption = RESUME_GAME;
+                menuLoop = false;
                 break;
             }
             break;
         case ALLEGRO_EVENT_TIMER:
-            //al_clear_to_color(BLUE);
-            //al_draw_bitmap(bitmapSpace, 0, 0, NO_FLAGS); 
-            al_draw_bitmap(bitmapBackround,
-                (DISPLAY_WIDTH / 2) - (al_get_bitmap_width(bitmapBackround) / 2),
-                0.2 * DISPLAY_HEIGHT,
-                NO_FLAGS);
+
+            al_clear_to_color(BLACK);
             al_draw_text(font,
                 YELLOW,
                 0.5 * DISPLAY_WIDTH,
                 0.1 * DISPLAY_HEIGHT,
                 ALLEGRO_ALIGN_CENTER,
                 "PAUSE MENU");
-            //// al_draw_text(font,
-            //     GREY,
-            //     DISPLAY_WIDTH / 2,
-            //     DISPLAY_HEIGHT / 3,
-            //     ALLEGRO_ALIGN_CENTER,
-            //     "Mario for Proga 1!");
-            al_draw_text(font,
-                WHITE,
-                DISPLAY_WIDTH / 2,
-                DISPLAY_HEIGHT / 2,
-                ALLEGRO_ALIGN_CENTER,
-                "Resume");
             if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) &&
                 (mouseState.y > 0.5f * DISPLAY_HEIGHT) && (mouseState.y < (0.6f * DISPLAY_HEIGHT))) {
                 al_draw_text(font,
@@ -432,18 +420,28 @@ enum LEVEL_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de co
                     ALLEGRO_ALIGN_CENTER,
                     "Resume");
             }
-            al_draw_text(font,
-                WHITE,
-                0.5 * DISPLAY_WIDTH,
-                0.75 * DISPLAY_HEIGHT,
-                ALLEGRO_ALIGN_CENTER,
-                "Quit to main menu");
+            else {
+                al_draw_text(font,
+                    WHITE,
+                    DISPLAY_WIDTH / 2,
+                    DISPLAY_HEIGHT / 2,
+                    ALLEGRO_ALIGN_CENTER,
+                    "Resume");
+            }
             if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
                 (mouseState.y > 0.75f * DISPLAY_HEIGHT) && (mouseState.y < (0.85f * DISPLAY_HEIGHT))) {
                 al_draw_text(font,
                     RED,
                     DISPLAY_WIDTH / 2,
                     0.75f * DISPLAY_HEIGHT,
+                    ALLEGRO_ALIGN_CENTER,
+                    "Quit to main menu");
+            }
+            else {
+                al_draw_text(font,
+                    WHITE,
+                    0.5 * DISPLAY_WIDTH,
+                    0.75 * DISPLAY_HEIGHT,
                     ALLEGRO_ALIGN_CENTER,
                     "Quit to main menu");
             }
