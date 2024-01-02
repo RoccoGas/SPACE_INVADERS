@@ -281,7 +281,7 @@ void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], playerS
 			(enemyLasers[n].y > PLAYERY) && (enemyLasers[n].y < PLAYERY + SPACESHIP_SIZE)) {// choca contra el jugador
 			player->lives--;
 			destroy_all_enemy_lasers(enemyLasers);
-			al_rest(0.1);
+			al_rest(0.2);
 			player->x = 0;
 			if (player->lives == 0) {
 				printf("PERDISTE!");

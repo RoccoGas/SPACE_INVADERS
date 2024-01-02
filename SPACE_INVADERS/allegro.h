@@ -14,7 +14,7 @@
 #include <allegro5/allegro_ttf.h>
 
 // --------------------------     colores      -------------------------- //
-#define BLACK           al_map_rgb(14,14,14)
+#define BLACK           al_map_rgb(18,18,18)
 #define BLACK2			al_map_rgb(0,0,0)
 #define WHITE           al_map_rgb(255,255,255)
 #define RED             al_map_rgb(255,0,0)

@@ -116,76 +116,43 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
                 NO_FLAGS);
             if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) && // cambia de color si el mouse esta sobre la opcion 
                 (mouseState.y > 0.5f * DISPLAY_HEIGHT) && (mouseState.y < (0.6f * DISPLAY_HEIGHT))) {
-                al_draw_text(font,
-                    GREEN,
-                    DISPLAY_WIDTH / 2,
-                    DISPLAY_HEIGHT / 2,
-                    ALLEGRO_ALIGN_CENTER,
-                    "Start");
+
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Start");
             }
             else { // Blanco si no esta el mouse sobre el texto 
 
-                al_draw_text(font,
-                    WHITE,
-                    DISPLAY_WIDTH / 2,
-                    DISPLAY_HEIGHT / 2,
-                    ALLEGRO_ALIGN_CENTER,
-                    "Start");
+                al_draw_text(font, WHITE, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Start");
             }
             /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
             if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) && // cambia de color si el mouse esta sobre la opcion 
                 (mouseState.y > 0.6f * DISPLAY_HEIGHT) && (mouseState.y < (0.7f * DISPLAY_HEIGHT))) {
-                al_draw_text(font,
-                    GREEN,
-                    DISPLAY_WIDTH / 2,
-                    0.6 * DISPLAY_HEIGHT ,
-                    ALLEGRO_ALIGN_CENTER,
-                    "Dificulty");
+
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, 0.6 * DISPLAY_HEIGHT , ALLEGRO_ALIGN_CENTER, "Dificulty");
             }
             else { // Blanco si no esta el mouse sobre el texto 
 
-                al_draw_text(font,
-                    WHITE,
-                    DISPLAY_WIDTH / 2,
-                    0.6 * DISPLAY_HEIGHT,
-                    ALLEGRO_ALIGN_CENTER,
-                    "Dificulty");
+                al_draw_text(font, WHITE, DISPLAY_WIDTH / 2, 0.6 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Dificulty");
             }
             /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
             if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
                 (mouseState.y > 0.7f * DISPLAY_HEIGHT) && (mouseState.y < (0.8f * DISPLAY_HEIGHT))) {
-                al_draw_text(font,
-                    GREEN,
-                    DISPLAY_WIDTH / 2,
-                    0.7f * DISPLAY_HEIGHT,
-                    ALLEGRO_ALIGN_CENTER,
-                    "Scoreboard");
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, 0.7 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Scoreboard");
+
             }
             else {
-                al_draw_text(font,
-                    WHITE,
-                    0.5 * DISPLAY_WIDTH,
-                    0.7 * DISPLAY_HEIGHT,
-                    ALLEGRO_ALIGN_CENTER,
-                    "Scoreboard");
+                al_draw_text(font, WHITE, DISPLAY_WIDTH / 2, 0.7 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Scoreboard");
+
             }
             /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
             if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
                 (mouseState.y > 0.8f * DISPLAY_HEIGHT) && (mouseState.y < (0.9f * DISPLAY_HEIGHT))) {
-                al_draw_text(font,
-                    RED,
-                    DISPLAY_WIDTH / 2,
-                    0.8f * DISPLAY_HEIGHT,
-                    ALLEGRO_ALIGN_CENTER,
-                    "Quit");
+
+                    al_draw_text(font, RED, DISPLAY_WIDTH / 2, 0.8 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "QUIT");
+
             }
             else {
-                al_draw_text(font,
-                    WHITE,
-                    0.5 * DISPLAY_WIDTH,
-                    0.8 * DISPLAY_HEIGHT,
-                    ALLEGRO_ALIGN_CENTER,
-                    "Quit");
+                al_draw_text(font, WHITE, DISPLAY_WIDTH / 2, 0.8 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "QUIT");
+
             }
             /// /// /// /// /// /// /// /// /// /// /// /// 
             /// /// /// /// /// /// /// /// /// /// /// /// 
@@ -482,10 +449,176 @@ enum LEVEL_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de co
 
     al_destroy_bitmap(bitmapBackround);
     al_destroy_bitmap(bitmapSpace);
-    //al_destroy_display(display); noo lo destruyo xq no es mio
     al_destroy_font(font);
     al_destroy_sample(menuMusicSample);
     al_destroy_sample_instance(menuMusic);
+    al_destroy_event_queue(queue);
+    al_destroy_timer(timer);
+
+    printf("Exiting [PAUSE MENU]\n");
+    return menuOption;
+}
+
+enum LEVEL_OPTIONS_E difficulty_menu(ALLEGRO_DISPLAY* display, enum DIFFICULTY_MODE_E* difficulty) {
+    printf("Entering [PAUSE MENU]\n");
+
+    al_set_target_backbuffer(display);
+
+    al_reserve_samples(1); // Para la musica del menu
+
+    ALLEGRO_FONT* font;
+
+    ALLEGRO_EVENT_QUEUE* queue;
+    ALLEGRO_TIMER* timer;
+
+    ALLEGRO_EVENT event;
+    ALLEGRO_KEYBOARD_STATE keyboardState;
+    ALLEGRO_MOUSE_STATE mouseState;
+
+    const char* fontFilepath = "assets/menu/space_invaders_font.ttf";
+    const char* menuMusicSampleFilenpath = "assets/menu/sweet_mystery_galaxy.wav";
+
+    //------------------ chequeo rrores de inicializacion de  Allegro ----------------------//
+
+
+
+    font = al_load_font(fontFilepath, MENU_FONT_SIZE, NO_FLAGS);
+    if (font == NULL) {
+        fprintf(stdout, "Failed to load: %s\n", fontFilepath);
+        return BAD_ASSET;
+    }
+
+
+    if (display == NULL) {
+        fprintf(stdout, "Failed to recive menu display \n ");
+        return BAD_DISPLAY;
+    }
+
+    queue = al_create_event_queue();
+    if (queue == NULL) {
+        fprintf(stdout, "Failed to create menu event queue\n");
+        return BAD_QUEUE;
+    }
+
+    timer = al_create_timer(TIMER_FPS(MENU_FPS));
+    if (timer == NULL) {
+        fprintf(stdout, "Failed to create menu timer of %u FPS\n", MENU_FPS);
+        return BAD_TIMER;
+    }
+
+    //---------------------- Registro eventos, comienzo el timer, nombro ventanan, empiezo musica ------------------------//
+
+    al_register_event_source(queue, al_get_keyboard_event_source());
+    al_register_event_source(queue, al_get_mouse_event_source());
+    al_register_event_source(queue, al_get_display_event_source(display));
+    al_register_event_source(queue, al_get_timer_event_source(timer));
+
+    al_start_timer(timer);
+
+    al_set_window_title(display, "Difficulty menu");
+
+
+    //-------------------------- Game loop del menu ---------------------------//
+
+    bool menuLoop = true; // Este es el "game loop" solo del menu
+    enum LEVEL_OPTIONS_E menuOption = NO_ERROR_START_GAME; // Esta variable se devuelve para informar q opcion sucedio
+    char difficultyMenuOptionCycle = 0;
+    while (menuLoop) {
+
+        al_wait_for_event(queue, &event);
+        al_get_keyboard_state(&keyboardState);
+        al_get_mouse_state(&mouseState);
+
+        switch (event.type) {
+        case ALLEGRO_EVENT_DISPLAY_CLOSE:
+            menuLoop = false;
+            menuOption = QUIT_GAME;
+            break;
+        case ALLEGRO_EVENT_KEY_DOWN:
+            switch (event.keyboard.keycode) {
+            case ALLEGRO_KEY_P:
+                menuOption = RESUME_GAME;
+                menuLoop = false;
+                break;
+            case ALLEGRO_KEY_DOWN:
+            case ALLEGRO_KEY_S:
+                difficultyMenuOptionCycle++; // cambia que opcion esta "activa para seleccionar"
+                if (difficultyMenuOptionCycle > 1) {
+                    difficultyMenuOptionCycle = 0;
+                }
+                break;
+            case ALLEGRO_KEY_UP:
+            case ALLEGRO_KEY_W:
+                difficultyMenuOptionCycle--; // cambia que opcion esta "activa para seleccionar"
+                if (difficultyMenuOptionCycle < 0) {
+                    difficultyMenuOptionCycle = 1;
+                }
+                break;
+            case ALLEGRO_KEY_ENTER:
+                switch (difficultyMenuOptionCycle) {
+                case 0:
+                    menuOption = RESUME_GAME;
+                    menuLoop = false;
+                    break;
+                case 1:
+                    menuOption = QUIT_TO_MENU;
+                    menuLoop = false;
+                }
+
+            }
+            break;
+
+        case ALLEGRO_EVENT_TIMER:
+            al_clear_to_color(BLACK);
+            al_draw_text(font, YELLOW, 0.5 * DISPLAY_WIDTH, 0.1 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Difficulty MENU");
+
+            if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) &&
+                (mouseState.y > 0.5f * DISPLAY_HEIGHT) && (mouseState.y < (0.6f * DISPLAY_HEIGHT))) {
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "EASY");
+            }
+            else {
+                al_draw_text(font, WHITE, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "EASY");
+            }
+            if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
+                (mouseState.y > 0.75f * DISPLAY_HEIGHT) && (mouseState.y < (0.85f * DISPLAY_HEIGHT))) {
+                al_draw_text(font, RED, DISPLAY_WIDTH / 2, 0.75f * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Quit to main menu");
+            }
+            else {
+                al_draw_text(font, WHITE, 0.5 * DISPLAY_WIDTH, 0.75 * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Quit to main menu");
+            }
+
+            switch (difficultyMenuOptionCycle) {
+            case 0:
+                al_draw_text(font, GREEN, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Resume");
+                break;
+            case 1:
+                al_draw_text(font, RED, DISPLAY_WIDTH / 2, 0.75f * DISPLAY_HEIGHT, ALLEGRO_ALIGN_CENTER, "Quit to main menu");
+            }
+
+            al_flip_display();
+            break;
+
+
+        case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+            if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) &&
+                (mouseState.y > 0.5f * DISPLAY_HEIGHT) && (mouseState.y < (0.6f * DISPLAY_HEIGHT))) {
+                menuOption = RESUME_GAME;
+                menuLoop = false;
+            }
+            else if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
+                (mouseState.y > 0.75f * DISPLAY_HEIGHT) && (mouseState.y < (0.85f * DISPLAY_HEIGHT))) {
+                menuOption = QUIT_TO_MENU;
+                menuLoop = false;
+            }
+            break;
+        default:
+            break;
+        }
+
+    }
+
+
+    al_destroy_font(font);
     al_destroy_event_queue(queue);
     al_destroy_timer(timer);
 
