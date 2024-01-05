@@ -69,13 +69,13 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
     queue = al_create_event_queue();
     if (queue == NULL) {
         fprintf(stdout, "Failed to create menu event queue\n");
-        return BAD_QUEUE;
+        return BAD_ASSET;
     }
 
     timer = al_create_timer(TIMER_FPS(MENU_FPS));
     if (timer == NULL) {
         fprintf(stdout, "Failed to create menu timer of %u FPS\n", MENU_FPS);
-        return BAD_TIMER;
+        return BAD_ASSET;
     }
 
     //---------------------- Registro eventos, comienzo el timer, nombro ventana, empiezo musica ------------------------//
@@ -97,7 +97,7 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
     //-------------------------- Game loop del menu ---------------------------//
 
     bool menuLoop = true; // Este es el "game loop" solo del menu
-    enum LEVEL_OPTIONS_E menuOption = NO_ERROR_START_GAME;
+    enum LEVEL_OPTIONS_E menuOption = NO_ERROR_CONTINUE_TO_LEVEL_ONE;
     char menuOptionCycle = 0;
     while (menuLoop) {
 
@@ -180,7 +180,7 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
         case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN: // clickea una opcion del menu
             if ((mouseState.x > 0.37f * DISPLAY_WIDTH) && (mouseState.x < (0.62f * DISPLAY_WIDTH)) &&
                 (mouseState.y > 0.5f * DISPLAY_HEIGHT) && (mouseState.y < (0.6f * DISPLAY_HEIGHT))) {
-                menuOption = NO_ERROR_START_GAME;
+                menuOption = NO_ERROR_CONTINUE_TO_LEVEL_ONE;
                 menuLoop = false;
             }
             else if ((mouseState.x > 0.40f * DISPLAY_WIDTH) && (mouseState.x < (0.59f * DISPLAY_WIDTH)) &&
@@ -224,7 +224,7 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
                 switch (menuOptionCycle){
                 case 0:
                     al_stop_sample_instance(menuMusic);
-                    return NO_ERROR_START_GAME;
+                    return NO_ERROR_CONTINUE_TO_LEVEL_ONE;
                     break;
                 case 1:
                     al_start_timer(timer);
@@ -326,13 +326,13 @@ enum LEVEL_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de co
     queue = al_create_event_queue();
     if (queue == NULL) {
         fprintf(stdout, "Failed to create menu event queue\n");
-        return BAD_QUEUE;
+        return BAD_ASSET;
     }
 
     timer = al_create_timer(TIMER_FPS(MENU_FPS));
     if (timer == NULL) {
         fprintf(stdout, "Failed to create menu timer of %u FPS\n", MENU_FPS);
-        return BAD_TIMER;
+        return BAD_ASSET;
     }
 
     //---------------------- Registro eventos, comienzo el timer, nombro ventanan, empiezo musica ------------------------//
@@ -353,7 +353,7 @@ enum LEVEL_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de co
     //-------------------------- Game loop del menu ---------------------------//
 
     bool menuLoop = true; // Este es el "game loop" solo del menu
-    enum LEVEL_OPTIONS_E menuOption = NO_ERROR_START_GAME; // Esta variable se devuelve para informar q opcion sucedio
+    enum LEVEL_OPTIONS_E menuOption = NO_ERROR_CONTINUE_TO_LEVEL_ONE; // Esta variable se devuelve para informar q opcion sucedio
     char pauseMenuOptionCycle = 0;
     while (menuLoop) {
 
@@ -501,13 +501,13 @@ enum LEVEL_OPTIONS_E difficulty_menu(ALLEGRO_DISPLAY* display, enum DIFFICULTY_M
     queue = al_create_event_queue();
     if (queue == NULL) {
         fprintf(stdout, "Failed to create menu event queue\n");
-        return BAD_QUEUE;
+        return BAD_ASSET;
     }
 
     timer = al_create_timer(TIMER_FPS(MENU_FPS));
     if (timer == NULL) {
         fprintf(stdout, "Failed to create menu timer of %u FPS\n", MENU_FPS);
-        return BAD_TIMER;
+        return BAD_ASSET;
     }
 
     //---------------------- Registro eventos, comienzo el timer, nombro ventanan, empiezo musica ------------------------//
@@ -525,7 +525,7 @@ enum LEVEL_OPTIONS_E difficulty_menu(ALLEGRO_DISPLAY* display, enum DIFFICULTY_M
     //-------------------------- Game loop del menu ---------------------------//
 
     bool menuLoop = true; // Este es el "game loop" solo del menu
-    enum LEVEL_OPTIONS_E menuOption = NO_ERROR_START_GAME; // Esta variable se devuelve para informar q opcion sucedio
+    enum LEVEL_OPTIONS_E menuOption = NO_ERROR_CONTINUE_TO_LEVEL_ONE; // Esta variable se devuelve para informar q opcion sucedio
     char difficultyMenuOptionCycle = 0;
     while (menuLoop) {
 

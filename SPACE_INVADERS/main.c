@@ -27,9 +27,27 @@ int main(){
         printf("Failed to initialize player\n");
     }
 
+    bool mainLoop = true;
+    enum LEVEL_OPTIONS_E mainOptions;
+    while (mainLoop) {
+        mainOptions = start_menu(display);
+        switch (mainOptions) {
+        case NO_ERROR_CONTINUE_TO_LEVEL_ONE:
+             mainOptions = level_one(display, player);
+            break;
+        case BAD_ASSET:
+            printf("Error en la carga de assets!");
+            mainLoop = false;
+            break;
+        case QUIT_GAME:
+            mainLoop = false;
+            break;
+        case QUIT_TO_MENU:
+            break;
+        }
 
-    start_menu(display);
-    level_one(display, player);
+
+    }
 
     al_destroy_display(display);
     destroy_allegro();

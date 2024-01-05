@@ -70,13 +70,13 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
     queue = al_create_event_queue();
     if (queue == NULL) {
         fprintf(stdout, "Failed to create event queue\n");
-        return BAD_QUEUE;
+        return BAD_ASSET;
     }
 
     timer = al_create_timer(TIMER_FPS(60));
     if (timer == NULL) {
         fprintf(stdout, "Failed to create level timer of %u FPS\n", MENU_FPS);
-        return BAD_TIMER;
+        return BAD_ASSET;
     }
 
 
@@ -98,7 +98,7 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
 
     bool levelOneLoop = true; // Este es el "game loop" del nivel 1
 
-    enum LEVEL_OPTIONS_E levelOneOption = NO_ERROR_START_GAME;
+    enum LEVEL_OPTIONS_E levelOneOption = NO_ERROR_CONTINUE_TO_LEVEL_ONE;
     int shooting = 0; //solucion momentanea al doble disparo
     unsigned int time = 0;
 
@@ -182,7 +182,11 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) 
             case ALLEGRO_KEY_P:
                 al_stop_sample_instance(levelOneMusic);
                 al_stop_timer(timer);
-                pause_menu(display);
+                if(pause_menu(display) == QUIT_TO_MENU) {
+                    levelOneOption = QUIT_TO_MENU;
+                    levelOneLoop = false;
+                    break;
+                }
                 al_flush_event_queue(queue);
                 al_start_timer(timer);
                 break;
