@@ -29,11 +29,12 @@ int main(){
 
     bool mainLoop = true;
     enum LEVEL_OPTIONS_E mainOptions;
+    int difficulty = 0;
     while (mainLoop) {
         mainOptions = start_menu(display);
         switch (mainOptions) {
         case NO_ERROR_CONTINUE_TO_LEVEL_ONE:
-             mainOptions = level_one(display, player);
+             mainOptions = level_one(display, player, difficulty);
             break;
         case BAD_ASSET:
             printf("Error en la carga de assets!");
@@ -42,7 +43,8 @@ int main(){
         case QUIT_GAME:
             mainLoop = false;
             break;
-        case QUIT_TO_MENU:
+        case DIFFICULTY:
+            difficulty_menu(display, &difficulty);
             break;
         }
 

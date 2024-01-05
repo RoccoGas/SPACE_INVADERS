@@ -8,7 +8,7 @@
 #include "initialize.h"
 #include "drawing.h"
 
-enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player) {
+enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player, int difficulty) {
 
     printf("[LEVEL ONE]\n");
 

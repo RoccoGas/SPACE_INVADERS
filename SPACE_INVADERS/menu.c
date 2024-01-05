@@ -227,11 +227,8 @@ enum LEVEL_OPTIONS_E start_menu(ALLEGRO_DISPLAY* display) {
                     return NO_ERROR_CONTINUE_TO_LEVEL_ONE;
                     break;
                 case 1:
-                    al_start_timer(timer);
-                    difficulty_menu(display, &difficulty);
-                    al_flush_event_queue(queue);
-                    al_start_timer(timer);
-                    return DIFFICULTY;
+                    menuLoop = false;
+                    menuOption =  DIFFICULTY;
                     break;
                 case 2:
                     return SCOREBOARD;
@@ -463,7 +460,7 @@ enum LEVEL_OPTIONS_E pause_menu(ALLEGRO_DISPLAY* display) { //igual q menu de co
     return menuOption;
 }
 
-enum LEVEL_OPTIONS_E difficulty_menu(ALLEGRO_DISPLAY* display, enum DIFFICULTY_MODE_E* difficulty) {
+enum LEVEL_OPTIONS_E difficulty_menu(ALLEGRO_DISPLAY* display, int* difficulty) {
     printf("Entering [PAUSE MENU]\n");
 
     al_set_target_backbuffer(display);
