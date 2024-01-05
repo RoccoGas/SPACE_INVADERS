@@ -118,7 +118,7 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player, 
             update_laser(player, &laser, enemy, &mostRightEnemy, &mostLeftEnemy, enemyLasers, shields, &mothership);
             update_mothership(&mothership);
             time++; // cada cuanto diapara
-            if (time == 35) {
+            if (time == 50 - (10 * difficulty)) {
                 start_enemy_shot(enemyLasers, decide_enemy_shot(enemy));
                 time = 0;
             }
