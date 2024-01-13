@@ -19,11 +19,16 @@ enum LEVEL_OPTIONS_E { NO_ERROR_CONTINUE_TO_LEVEL_ONE, NO_ERROR_CONTINUE_TO_LEVE
 
 #define MOTHERSHIP_WIDTH 64
 #define MOTHERSHIP_HEIGHT 28
-#define MOTHERSHIP_FREQUENCY_TIMER 600
+#define MOTHERSHIP_FREQUENCY_TIMER 1000
 
+#define MAX_ENEMY_ROWS 10
+#define MAX_ENEMY_COLS 10
 
-#define LEVEL1_ROWS 5
-#define LEVEL1_COLS 8
+#define LEVEL1_ROWS 2
+#define LEVEL1_COLS 3
+
+#define LEVEL2_ROWS 4
+#define LEVEL2_COLS 8
 
 #define PLAYERY	840
 
@@ -95,7 +100,7 @@ typedef struct {
 	float y;
 	ALLEGRO_BITMAP* bitmap;
 	enum SPACESHIP_STATUS_E state;
-	bool isAlive;
+	int health;
 	unsigned int timer;
 } mothership_t;
 

@@ -2,16 +2,19 @@
 #include <stdio.h>
 
 
-void enemy_movement_1(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int * enemyDirection, unsigned int* downFlag, enemyStatus* mostLeftEnemy, enemyStatus* mostRightEnemy) { //se usa en ciclos, conviene tener bitmap como parametro
+void enemy_movement_1(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned int * enemyDirection, unsigned int* downFlag, enemyStatus* mostLeftEnemy, enemyStatus* mostRightEnemy) { //se usa en ciclos, conviene tener bitmap como parametro
 
 
 
 	if ((mostRightEnemy->x + ENEMY_WIDTH) >= DISPLAY_WIDTH && *downFlag == 0) { //todos los sprites de los enemigos tienen el mismo tamaño (o al menos el ancho, arreglar que hacemos)
+		printf("CHOQUE CONTRA LA DERACHA!\n");
 		update_enemy_y(enemy);
 		*enemyDirection = ENEMY_DIRECTION_LEFT;
 		*downFlag = 1;
 	}	
-	else if (mostLeftEnemy->x <= 0 && *downFlag == 0) {                            
+	else if (mostLeftEnemy->x <= 0 && *downFlag == 0) {    
+		printf("CHOQUE CONTRA LA IZQUIERDA!\n");
+
 		update_enemy_y(enemy);
 		*enemyDirection = ENEMY_DIRECTION_RIGHT;
 		*downFlag = 1;
@@ -39,11 +42,11 @@ void update_player(playerStatus* player, ALLEGRO_KEYBOARD_STATE keyboardState, l
 }
 
 
-void update_enemy_x(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int enemyDirection) {
+void update_enemy_x(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned int enemyDirection) {
 	int i, j;
 
-	for (i = 0; i < LEVEL1_ROWS; i++) {
-		for (j = 0; j < LEVEL1_COLS; j++) {
+	for (i = 0; i < MAX_ENEMY_ROWS; i++) {
+		for (j = 0; j < MAX_ENEMY_COLS; j++) {
 
 			if (enemyDirection == ENEMY_DIRECTION_RIGHT) {
 				enemy[i][j].x += 2;
@@ -58,16 +61,27 @@ void update_enemy_x(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], unsigned int en
 }
 
 
-void update_enemy_y(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) { // baja a todos los enemigos cuando se chocan contra la pared
+void update_enemy_y(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]) { // baja a todos los enemigos cuando se chocan contra la pared
 	int i, j;
-	//printf("ENTRE A UPDATE_ENEMY_Y!\n");
-	for (i = 0; i < LEVEL1_ROWS; i++) {
-		for (j = 0; j < LEVEL1_COLS; j++) {
+	printf("ENTRE A UPDATE_ENEMY_Y!\n");
+	for (i = 0; i < MAX_ENEMY_ROWS; i++) {
+		for (j = 0; j < MAX_ENEMY_COLS; j++) {
 			enemy[i][j].y += 20;
 		}
 	}
 }
-
+int count_alive_enemies(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]) {
+	int i, j;
+	int counter = 0;
+	for (i = 0; i < MAX_ENEMY_ROWS; i++) {
+		for (j = 0; j < MAX_ENEMY_COLS; j++) {
+			if (enemy[i][j].alive) {
+				counter++;
+			}
+		}
+	}
+	return counter;
+}
 
 void shoot_laser(playerStatus* player, laser_t* laser) {
 	if (laser->moving == true) {
@@ -79,12 +93,12 @@ void shoot_laser(playerStatus* player, laser_t* laser) {
 }
 
 void update_laser(playerStatus* player, laser_t* laser,
-				enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], enemyStatus** mostRight, enemyStatus** mostLeft,
+				enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], enemyStatus** mostRight, enemyStatus** mostLeft,
 				enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH],
 				mothership_t* mothership) {
 	unsigned int i, j, k;
 
-	laser->y -= 10;
+	laser->y -= 20;
 	if (laser->y < 0) { // llego al techo
 		laser->moving = false;
 		return;
@@ -102,8 +116,8 @@ void update_laser(playerStatus* player, laser_t* laser,
 				}
 			}
 		}
-		for (i = 0; i < LEVEL1_ROWS; i++) {
-			for (j = 0; j < LEVEL1_COLS; j++) {
+		for (i = 0; i < MAX_ENEMY_ROWS; i++) {
+			for (j = 0; j < MAX_ENEMY_COLS; j++) {
 				if ((laser->x > enemy[i][j].x) && (laser->x < enemy[i][j].x + ENEMY_WIDTH) && 
 					(laser->y > enemy[i][j].y) && (laser->y < enemy[i][j].y + ENEMY_HEIGHT) && 
 					(enemy[i][j].alive)) { //Choco con enemigo
@@ -144,24 +158,28 @@ void update_laser(playerStatus* player, laser_t* laser,
 				}
 			}
 		}
-		if ((mothership->isAlive) && 
+		if ((mothership->health > 0) && 
 			(laser->x > mothership->x) && (laser->x < mothership->x + MOTHERSHIP_WIDTH) &&
 			(laser->y > mothership->y) && (laser->y < mothership->y + MOTHERSHIP_HEIGHT) ) { //choca con la mothership
 
-			mothership->isAlive = false;
+			mothership->health--;
+			if(mothership->health == 0){
+				player->score += 5000;
+				mothership->timer = 0;
+			}
 			laser->moving = false;
-			player->score += 5000;
-			mothership->timer = 0;
+			
+			
 		}
 	}
 }
 
 
-enemyStatus* update_most_right(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) { // busca el enemigo mas arriva y a la derecha posible que este vivo, sirve para saber cuando este se choca contra
+enemyStatus* update_most_right(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]) { // busca el enemigo mas arriva y a la derecha posible que este vivo, sirve para saber cuando este se choca contra
 	 int i, j;																	// los costados del display para que bajen los enemigos
 
-	for (i = LEVEL1_COLS - 1; i >= 0; i--) {
-		for (j = 0; j < LEVEL1_ROWS; j++) {
+	for (i = MAX_ENEMY_COLS - 1; i >= 0; i--) {
+		for (j = 0; j < MAX_ENEMY_ROWS; j++) {
 			if (enemy[j][i].alive) {
 				return &enemy[j][i];
 			}
@@ -169,12 +187,11 @@ enemyStatus* update_most_right(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) { //
 	}
 	return NULL;
 }
-enemyStatus*  update_most_left(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {// busca el enemigo que esta mas arriba y a la izquierda posible  y devuelve un puntero a este
+enemyStatus*  update_most_left(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]) {// busca el enemigo que esta mas arriba y a la izquierda posible  y devuelve un puntero a este
 	int i, j;
-	for (i = 0; i < LEVEL1_COLS; i++) {
-		for (j = 0; j < LEVEL1_ROWS; j++) {
+	for (i = 0; i < MAX_ENEMY_COLS; i++) {
+		for (j = 0; j < MAX_ENEMY_ROWS; j++) {
 			if (enemy[j][i].alive) {
-				//enemy[j][i].alive = false;
 				
 
 				return &enemy[j][i];
@@ -183,18 +200,6 @@ enemyStatus*  update_most_left(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {// 
 	}
 	return NULL;
 	
-}
-int count_alive_enemies(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
-	int i, j;
-	int counter = 0;
-	for (i = 0; i < LEVEL1_COLS; i++) {
-		for (j = 0; j < LEVEL1_ROWS; j++) {
-			if (enemy[j][i].alive) {
-				counter++;
-			}
-		}
-	}
-	return counter;
 }
 
 int count_alive_lasers(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) { //cuenta los lasers vivos
@@ -208,24 +213,24 @@ int count_alive_lasers(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) { //cue
 	return counter;
 }
 
-enemyStatus*  decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) { //devuelve un puntero al enemigo que va a disparar el proximo disparo
+enemyStatus*  decide_enemy_shot(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], int rows, int cols) { //devuelve un puntero al enemigo que va a disparar el proximo disparo
 	//printf("ENTRE A DECISE ENEMY SHOT!\n");
 	int i, j;
 	srand(time(NULL));
 	
-	int shootingEnemyX = rand() % LEVEL1_COLS;
+	int shootingEnemyX = rand() % cols;
 	int random = rand() % 2;
 	
 	if (random == 1) {
-		for (j = shootingEnemyX; j < LEVEL1_COLS; j++) {
-			for (i = LEVEL1_ROWS - 1; i >= 0; i--) {
+		for (j = shootingEnemyX; j < cols; j++) {
+			for (i = rows - 1; i >= 0; i--) {
 				if (enemy[i][j].alive) {
 					return &enemy[i][j];
 				}
 			}
 		}
 		for (j = shootingEnemyX - 1; j >= 0; j--) { // Para no hacer dos veces el mismo caso 
-			for (i = LEVEL1_ROWS - 1; i >= 0; i--) {
+			for (i = rows - 1; i >= 0; i--) {
 				if (enemy[i][j].alive) {
 					return &enemy[i][j];
 				}
@@ -234,14 +239,14 @@ enemyStatus*  decide_enemy_shot(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) { /
 	}
 	else {
 		for (j = shootingEnemyX - 1; j >= 0; j--) { // Para no hacer dos veces el mismo caso 
-			for (i = LEVEL1_ROWS - 1; i >= 0; i--) {
+			for (i = rows - 1; i >= 0; i--) {
 				if (enemy[i][j].alive) {
 					return &enemy[i][j];
 				}
 			}
 		}
-		for (j = shootingEnemyX; j < LEVEL1_COLS; j++) {
-			for (i = LEVEL1_ROWS - 1; i >= 0; i--) {
+		for (j = shootingEnemyX; j < cols; j++) {
+			for (i = rows - 1; i >= 0; i--) {
 				if (enemy[i][j].alive) {
 					return &enemy[i][j];
 				}
@@ -308,18 +313,18 @@ void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], playerS
 }
 
 void update_mothership(mothership_t* mothership) {
-	if (mothership->isAlive) {
+	if (mothership->health > 0) {
 		switch (mothership->state)
 		{
 		case MOVING_LEFT:
-			mothership->x -= 1.2;
+			mothership->x -= 2.4;
 			break;
 		case MOVING_RIGHT:
-			mothership->x += 1.2;
+			mothership->x += 2.4;
 			break;
 		}
 		if ((mothership->x > DISPLAY_WIDTH + 200) || (mothership->x < -200)) { // si se va de la pantalla no la updateo mas
-			mothership->isAlive = false;
+			mothership->health = 0;
 			mothership->timer = 0;
 		}
 	}

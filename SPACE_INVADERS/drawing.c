@@ -2,13 +2,11 @@
 #include "allegro.h"
 #include "header.h"
 
-void draw_all_enemies(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS]) {
+void draw_all_enemies(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], int rows, int cols) {
 	int i, j;
-	int  aux = LEVEL1_COLS * LEVEL1_ROWS;
-	for (i = 0; i < LEVEL1_ROWS; i++) {
-		for (j = 0; j < LEVEL1_COLS; j++) {
+	for (i = 0; i < MAX_ENEMY_ROWS; i++) {
+		for (j = 0; j < MAX_ENEMY_COLS; j++) {
 			if (enemy[i][j].alive) {
-
 				al_draw_bitmap(enemy[i][j].bitmap, enemy[i][j].x, enemy[i][j].y, 0);
 			}
 		}
@@ -32,7 +30,7 @@ void draw_enemy_laser(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
 }
 
 void draw_mothership(mothership_t* mothership) {
-	if (mothership->isAlive) {
+	if (mothership->health > 0) {
 		al_draw_bitmap(mothership->bitmap, mothership->x, mothership->y, 0);
 	}
 }

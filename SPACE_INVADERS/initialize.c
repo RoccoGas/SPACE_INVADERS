@@ -45,17 +45,28 @@ bool init_enemy(enemyStatus* enemy, const char* enemyTypeFile){
     return true;
 }
 
-bool init_all_enemies1(enemyStatus enemy[LEVEL1_ROWS][LEVEL1_COLS], const char* enemyTypeFile) {
+bool init_all_enemies1(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], int rows, int cols, const char* enemyTypeFile) {
     int i, j;
-    for (i = 0; i < LEVEL1_ROWS; i++) {
-        for (j = 0; j < LEVEL1_COLS; j++) {
+    for (i = 0; i < MAX_ENEMY_ROWS; i++) {
+        for (j = 0; j < MAX_ENEMY_COLS ; j++) {
             if (!init_enemy(&enemy[i][j], enemyTypeFile)) {
                 printf("Failed to initialize enemy %d\n", i);
                 return false;
             }
 
             enemy[i][j].x += INITIAL_X_OFFSET * j;
-            enemy[i][j].y += INITIAL_Y_OFFSET * i;
+            enemy[i][j].y += INITIAL_Y_OFFSET * i + 40;
+        }
+    }
+    for (i = 0  ; i < rows; i++) { // mato los que no necesito para este nivel
+        for ( j = cols ; j < MAX_ENEMY_COLS; j++) {
+            enemy[i][j].alive = false;
+        }
+    }
+
+    for (i = rows; i < MAX_ENEMY_ROWS; i++) { // mato los que no necesito para este nivel
+        for (j = 0; j < MAX_ENEMY_COLS; j++) {
+            enemy[i][j].alive = false;
         }
     }
     return true;
@@ -82,14 +93,14 @@ bool init_mothership(mothership_t* mothership) {
         return false;
     }
     mothership->state = NOT_MOVING;
-    mothership->isAlive = false; // para que no se vea al principio
+    mothership->health = 2; // para que no se vea al principio
     mothership->y = 20;
     mothership->timer = 0;
 }
 
 void reset_mothership(mothership_t* mothership) {
     srand(time(NULL));
-    mothership->isAlive = true;
+    mothership->health = 2;
     int random = rand() % 2; //para que vaya a veces de dercha a izq y vice
     if (random == 0) {
         mothership->x = 0 - MOTHERSHIP_WIDTH;
