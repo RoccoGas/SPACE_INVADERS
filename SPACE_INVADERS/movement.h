@@ -7,8 +7,8 @@
 
 void update_player(playerStatus* player, ALLEGRO_KEYBOARD_STATE keyboardState, laser_t* laser);
 void update_enemy_y(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]);
-void update_enemy_x(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned int enemyDirection);
-void enemy_movement_1(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned int* enemyDirection, unsigned int* downFlag, enemyStatus* mostLeftEnemy, enemyStatus* mostRightEnemy);
+void update_enemy_x(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned int enemyDirection, int difficulty);
+void enemy_movement_1(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned int* enemyDirection, unsigned int* downFlag, enemyStatus* mostLeftEnemy, enemyStatus* mostRightEnemy, int difficulty);
 void shoot_laser(playerStatus* player, laser_t* laser);
 
 void update_laser(playerStatus* player, laser_t* laser, 

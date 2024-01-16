@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 
-void enemy_movement_1(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned int * enemyDirection, unsigned int* downFlag, enemyStatus* mostLeftEnemy, enemyStatus* mostRightEnemy) { //se usa en ciclos, conviene tener bitmap como parametro
+void enemy_movement_1(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned int * enemyDirection, unsigned int* downFlag, enemyStatus* mostLeftEnemy, enemyStatus* mostRightEnemy, int difficulty) { //se usa en ciclos, conviene tener bitmap como parametro
 
 
 
@@ -20,11 +20,11 @@ void enemy_movement_1(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigne
 		*downFlag = 1;
 	}
 	else if (*enemyDirection == ENEMY_DIRECTION_RIGHT) {
-		update_enemy_x(enemy, *enemyDirection);
+		update_enemy_x(enemy, *enemyDirection, difficulty);
 		*downFlag = 0;
 	}
 	else if (*enemyDirection == ENEMY_DIRECTION_LEFT) {
-		update_enemy_x(enemy, *enemyDirection);
+		update_enemy_x(enemy, *enemyDirection, difficulty);
 		*downFlag = 0;
 	}
 
@@ -42,18 +42,18 @@ void update_player(playerStatus* player, ALLEGRO_KEYBOARD_STATE keyboardState, l
 }
 
 
-void update_enemy_x(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned int enemyDirection) {
+void update_enemy_x(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned int enemyDirection, int difficulty) {
 	int i, j;
 
 	for (i = 0; i < MAX_ENEMY_ROWS; i++) {
 		for (j = 0; j < MAX_ENEMY_COLS; j++) {
 
 			if (enemyDirection == ENEMY_DIRECTION_RIGHT) {
-				enemy[i][j].x += 2;
+				enemy[i][j].x +=  2 + 0.5*(float)difficulty;
 			}
 
 			else if (enemyDirection == ENEMY_DIRECTION_LEFT) {
-				enemy[i][j].x -= 2;
+				enemy[i][j].x -= 2 + 0.5*(float)difficulty;
 			}
 
 		}

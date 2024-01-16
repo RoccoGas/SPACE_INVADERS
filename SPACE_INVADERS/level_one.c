@@ -119,7 +119,7 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player, 
             }
             //UPDATE SPRITES 
             update_player(player, keyboardState, &laser);
-            enemy_movement_1(enemy, &enemyDirection, &downFlag, mostLeftEnemy, mostRightEnemy);
+            enemy_movement_1(enemy, &enemyDirection, &downFlag, mostLeftEnemy, mostRightEnemy, difficulty);
             update_laser(player, &laser, enemy, &mostRightEnemy, &mostLeftEnemy, enemyLasers, shields, &mothership);
             update_mothership(&mothership);
             time++; // cada cuanto diapara
@@ -353,7 +353,7 @@ enum LEVEL_OPTIONS_E  level_two(ALLEGRO_DISPLAY* display, playerStatus* player, 
             }
             //UPDATE SPRITES 
             update_player(player, keyboardState, &laser);
-            enemy_movement_1(enemy, &enemyDirection, &downFlag, mostLeftEnemy, mostRightEnemy);
+            enemy_movement_1(enemy, &enemyDirection, &downFlag, mostLeftEnemy, mostRightEnemy, difficulty);
             update_laser(player, &laser, enemy, &mostRightEnemy, &mostLeftEnemy, enemyLasers, shields, &mothership);
             update_mothership(&mothership);
             time++; // cada cuanto diapara
