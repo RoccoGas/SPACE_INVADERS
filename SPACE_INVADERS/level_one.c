@@ -34,7 +34,7 @@ enum LEVEL_OPTIONS_E  level_one(ALLEGRO_DISPLAY* display, playerStatus* player, 
 
 
     laser.moving = false;
-    init_all_enemies1(enemy, LEVEL1_ROWS, LEVEL1_COLS, ENEMY1_FILE_PATH);
+    init_all_enemies1(enemy, LEVEL1_ROWS, LEVEL1_COLS, ENEMY1_FILE_PATH, ENEMY2_FILE_PATH);
     init_enemy_lasers(enemyLasers);
     init_all_shields(shields);
     init_mothership(&mothership);
@@ -269,7 +269,7 @@ enum LEVEL_OPTIONS_E  level_two(ALLEGRO_DISPLAY* display, playerStatus* player, 
 
 
     laser.moving = false;
-    init_all_enemies1(enemy,LEVEL2_ROWS, LEVEL2_COLS,  ENEMY1_FILE_PATH);
+    init_all_enemies1(enemy,LEVEL2_ROWS, LEVEL2_COLS,  ENEMY1_FILE_PATH, ENEMY2_FILE_PATH);
     init_enemy_lasers(enemyLasers);
     init_all_shields(shields);
     init_mothership(&mothership);

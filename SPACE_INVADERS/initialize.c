@@ -45,13 +45,22 @@ bool init_enemy(enemyStatus* enemy, const char* enemyTypeFile){
     return true;
 }
 
-bool init_all_enemies1(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], int rows, int cols, const char* enemyTypeFile) {
+bool init_all_enemies1(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], int rows, int cols, const char* enemyTypeFile, const char* enemyTypeFile2) {
     int i, j;
     for (i = 0; i < MAX_ENEMY_ROWS; i++) {
         for (j = 0; j < MAX_ENEMY_COLS ; j++) {
-            if (!init_enemy(&enemy[i][j], enemyTypeFile)) {
-                printf("Failed to initialize enemy %d\n", i);
-                return false;
+
+            if (i < ENEMY1_ROWS) { // cuantas rows de enemigo 1
+                if (!init_enemy(&enemy[i][j], enemyTypeFile)) {
+                    printf("Failed to initialize enemy %d\n", i);
+                    return false;
+                }
+            }
+            else {
+                if (!init_enemy(&enemy[i][j], enemyTypeFile2)) {
+                    printf("Failed to initialize enemy %d\n", i);
+                    return false;
+                }
             }
 
             enemy[i][j].x += INITIAL_X_OFFSET * j;
