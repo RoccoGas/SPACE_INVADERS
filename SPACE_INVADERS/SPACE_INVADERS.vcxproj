@@ -154,7 +154,7 @@
     <ClCompile Include="drawing.c" />
     <ClCompile Include="movement.c" />
     <ClCompile Include="initialize.c" />
-    <ClCompile Include="level_one.c" />
+    <ClCompile Include="play_level.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="menu.c" />
   </ItemGroup>

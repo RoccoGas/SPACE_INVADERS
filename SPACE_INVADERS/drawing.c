@@ -2,7 +2,7 @@
 #include "allegro.h"
 #include "header.h"
 
-void draw_all_enemies(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], int rows, int cols) {
+void draw_all_enemies(enemy_t enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], int rows, int cols) {
 	int i, j;
 	for (i = 0; i < MAX_ENEMY_ROWS; i++) {
 		for (j = 0; j < MAX_ENEMY_COLS; j++) {
@@ -47,7 +47,7 @@ void draw_shields(shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHI
 		}
 	}
 }
-void draw_HUD(playerStatus* player, ALLEGRO_FONT* font) {
+void draw_HUD(player_t* player, ALLEGRO_FONT* font) {
 	al_draw_textf(font, WHITE, 10, DISPLAY_HEIGHT - 50, 0, "LIVES: %d", player->lives);
 	al_draw_textf(font, WHITE, DISPLAY_WIDTH - 350, DISPLAY_HEIGHT - 50, 0, "SCORE: %d", player->score);
 
@@ -60,6 +60,18 @@ void draw_lose_screen() {
 	}
 	al_clear_to_color(BLACK2);
 	al_draw_textf(HUDfont, RED, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "YOU LOSE");
+	al_flip_display();
+	al_rest(2.0);
+}
+
+void draw_win_screen() {
+	ALLEGRO_FONT* HUDfont = al_load_font(FONT_FILE_PATH, 60, NO_FLAGS);
+	if (HUDfont == NULL) {
+		printf("Failed to load: %s\n", FONT_FILE_PATH);
+		return BAD_ASSET;
+	}
+	al_clear_to_color(BLACK2);
+	al_draw_textf(HUDfont, GREEN, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "YOU WIN!!!");
 	al_flip_display();
 	al_rest(2.0);
 }

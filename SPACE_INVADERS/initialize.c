@@ -6,7 +6,7 @@
 #include "header.h"
 #include "movement.h"
 
-bool init_player(playerStatus* player) {
+bool init_player(player_t* player) {
     player->x = 20;
     player->lives = 3;
     player->score = 0;
@@ -33,7 +33,7 @@ bool init_enemy_lasers(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) {
 
 
 
-bool init_enemy(enemyStatus* enemy, const char* enemyTypeFile){
+bool init_enemy(enemy_t* enemy, const char* enemyTypeFile){
     enemy->x = 0;
     enemy->y = 0;
     enemy->alive = 1;
@@ -45,7 +45,7 @@ bool init_enemy(enemyStatus* enemy, const char* enemyTypeFile){
     return true;
 }
 
-bool init_all_enemies1(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], int rows, int cols, const char* enemyTypeFile, const char* enemyTypeFile2) {
+bool init_all_enemies1(enemy_t enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], int rows, int cols, const char* enemyTypeFile, const char* enemyTypeFile2) {
     int i, j;
     for (i = 0; i < MAX_ENEMY_ROWS; i++) {
         for (j = 0; j < MAX_ENEMY_COLS ; j++) {
@@ -62,6 +62,11 @@ bool init_all_enemies1(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], int ro
                     return false;
                 }
             }
+
+            /*if (!init_enemy(&enemy[i][j], enemyTypeFile)) {
+                printf("Failed to initialize enemy %d\n", i);
+                return false;
+            }*/
 
             enemy[i][j].x += INITIAL_X_OFFSET * j;
             enemy[i][j].y += INITIAL_Y_OFFSET * i + 40;

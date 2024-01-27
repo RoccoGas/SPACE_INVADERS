@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 
-void enemy_movement_1(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned int * enemyDirection, unsigned int* downFlag, enemyStatus* mostLeftEnemy, enemyStatus* mostRightEnemy, int difficulty) { //se usa en ciclos, conviene tener bitmap como parametro
+void enemy_movement_1(enemy_t enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned int * enemyDirection, unsigned int* downFlag, enemy_t* mostLeftEnemy, enemy_t* mostRightEnemy, int difficulty) { //se usa en ciclos, conviene tener bitmap como parametro
 
 
 
@@ -32,7 +32,7 @@ void enemy_movement_1(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigne
 
 }
 
-void update_player(playerStatus* player, ALLEGRO_KEYBOARD_STATE keyboardState, laser_t* laser) {
+void update_player(player_t* player, ALLEGRO_KEYBOARD_STATE keyboardState, laser_t* laser) {
 	if ((player->state == MOVING_RIGHT) && ((player->x + SPACESHIP_SIZE) < DISPLAY_WIDTH)) {
 		player->x += 3;
 	}
@@ -42,7 +42,7 @@ void update_player(playerStatus* player, ALLEGRO_KEYBOARD_STATE keyboardState, l
 }
 
 
-void update_enemy_x(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned int enemyDirection, int difficulty) {
+void update_enemy_x(enemy_t enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned int enemyDirection, int difficulty) {
 	int i, j;
 
 	for (i = 0; i < MAX_ENEMY_ROWS; i++) {
@@ -61,8 +61,19 @@ void update_enemy_x(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], unsigned 
 }
 
 
-void update_enemy_y(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]) { // baja a todos los enemigos cuando se chocan contra la pared
+void update_enemy_y(enemy_t enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]) { // baja a todos los enemigos cuando se chocan contra la pared
+
 	int i, j;
+	for (i = MAX_ENEMY_ROWS - 1; i >= 0; i--) {
+		for (j = 0; j < MAX_ENEMY_COLS; j++) {
+			if (enemy[i][j].alive) { // enecuentra al enemigo "mas abajo"
+				if ( enemy[i][j].y >ENEMY_SHIELD_GAP) {
+					return;
+				}
+			}
+		}
+	}
+
 	printf("ENTRE A UPDATE_ENEMY_Y!\n");
 	for (i = 0; i < MAX_ENEMY_ROWS; i++) {
 		for (j = 0; j < MAX_ENEMY_COLS; j++) {
@@ -70,7 +81,7 @@ void update_enemy_y(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]) { // baja
 		}
 	}
 }
-int count_alive_enemies(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]) {
+int count_alive_enemies(enemy_t enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]) {
 	int i, j;
 	int counter = 0;
 	for (i = 0; i < MAX_ENEMY_ROWS; i++) {
@@ -83,7 +94,7 @@ int count_alive_enemies(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]) {
 	return counter;
 }
 
-void shoot_laser(playerStatus* player, laser_t* laser) {
+void shoot_laser(player_t* player, laser_t* laser) {
 	if (laser->moving == true) {
 		return;
 	}
@@ -92,8 +103,8 @@ void shoot_laser(playerStatus* player, laser_t* laser) {
 	laser->y = PLAYERY;
 }
 
-void update_laser(playerStatus* player, laser_t* laser,
-				enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], enemyStatus** mostRight, enemyStatus** mostLeft,
+void update_laser(player_t* player, laser_t* laser,
+				enemy_t enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], enemy_t** mostRight, enemy_t** mostLeft,
 				enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH],
 				mothership_t* mothership) {
 	unsigned int i, j, k;
@@ -124,7 +135,7 @@ void update_laser(playerStatus* player, laser_t* laser,
 					laser->moving = false;
 					enemy[i][j].alive = false;
 					player->score += 100;
-					if (&enemy[i][j] == *mostLeft) { //mato al enemigo de mas arriva y a la izquierda, hay que actualizarlo
+					if (&enemy[i][j] == *mostLeft) { //mato al enemigo de mas arriba y a la izquierda, hay que actualizarlo
 						printf("UPdate de mostleft de  %p a ", *mostLeft);
 						*mostLeft = update_most_left(enemy);
 						printf("%p\n ", *mostLeft);
@@ -175,7 +186,7 @@ void update_laser(playerStatus* player, laser_t* laser,
 }
 
 
-enemyStatus* update_most_right(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]) { // busca el enemigo mas arriva y a la derecha posible que este vivo, sirve para saber cuando este se choca contra
+enemy_t* update_most_right(enemy_t enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]) { // busca el enemigo mas arriva y a la derecha posible que este vivo, sirve para saber cuando este se choca contra
 	 int i, j;																	// los costados del display para que bajen los enemigos
 
 	for (i = MAX_ENEMY_COLS - 1; i >= 0; i--) {
@@ -187,7 +198,7 @@ enemyStatus* update_most_right(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]
 	}
 	return NULL;
 }
-enemyStatus*  update_most_left(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]) {// busca el enemigo que esta mas arriba y a la izquierda posible  y devuelve un puntero a este
+enemy_t*  update_most_left(enemy_t enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS]) {// busca el enemigo que esta mas arriba y a la izquierda posible  y devuelve un puntero a este
 	int i, j;
 	for (i = 0; i < MAX_ENEMY_COLS; i++) {
 		for (j = 0; j < MAX_ENEMY_ROWS; j++) {
@@ -213,14 +224,23 @@ int count_alive_lasers(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT]) { //cue
 	return counter;
 }
 
-enemyStatus*  decide_enemy_shot(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], int rows, int cols) { //devuelve un puntero al enemigo que va a disparar el proximo disparo
+enemy_t*  decide_enemy_shot(enemy_t enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS], int rows, int cols) { //devuelve un puntero al enemigo que va a disparar el proximo disparo
 	//printf("ENTRE A DECISE ENEMY SHOT!\n");
 	int i, j;
-	srand(time(NULL));
+	//srand(time(NULL)); muevo el seed a main asi no me genera lo mismo
 	
+
+	
+	
+	int ciclos = rand() % 51;
+
+	for (i = 0; i < ciclos; i++) {
+		rand();
+	}
+
 	int shootingEnemyX = rand() % cols;
 	int random = rand() % 2;
-	
+
 	if (random == 1) {
 		for (j = shootingEnemyX; j < cols; j++) {
 			for (i = rows - 1; i >= 0; i--) {
@@ -257,7 +277,7 @@ enemyStatus*  decide_enemy_shot(enemyStatus enemy[MAX_ENEMY_ROWS][MAX_ENEMY_COLS
 	return NULL;
 }
 
-void start_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], enemyStatus* chosenEnemy) { //comienza el disparo del enemigo con un enemigo elegido aleatoriamente
+void start_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], enemy_t* chosenEnemy) { //comienza el disparo del enemigo con un enemigo elegido aleatoriamente
 	if (count_alive_lasers(enemyLasers) == MAX_ENEMY_LASER_AMOUNT) {								//pero siempre de la fila mas de abajo
 		printf("MAXIMA CANTIDAD DE LASERS\n");
 		return;
@@ -274,7 +294,7 @@ void start_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], enemySta
 
 }
 
-void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], playerStatus* player, shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH]) {
+void update_enemy_shot(enemyLaser_t enemyLasers[MAX_ENEMY_LASER_AMOUNT], player_t* player, shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX_SHIELD_LENGTH]) {
 	int n;
 	int i, k, j;
 	for (n = 0; n < MAX_ENEMY_LASER_AMOUNT; n++) {

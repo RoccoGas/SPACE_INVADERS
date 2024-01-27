@@ -10,6 +10,9 @@
 
 
 int main(){
+
+
+    srand(time(NULL));
     if (!initialize_allegro()) {
         printf("Unable to start because allegro was not properly initialized...");
         return -1;
@@ -22,14 +25,14 @@ int main(){
         return false;
     }
 
-    playerStatus player;
+    player_t player;
     if (!init_player(&player)) {
         printf("Failed to initialize player\n");
     }
 
     bool mainLoop = true;
     enum LEVEL_OPTIONS_E mainOptions;
-    int difficulty = 0;
+    int difficulty = 1;
     bool menuFlag = false;
     while (mainLoop) {
         if (menuFlag == false) {
@@ -38,11 +41,19 @@ int main(){
         }
         switch (mainOptions) {
         case NO_ERROR_CONTINUE_TO_LEVEL_ONE:
-             mainOptions = level_one(display, player, difficulty);
+             mainOptions = play_level(display, &player, difficulty, 1);
              printf("saliendo de level one main options es: %d\n", mainOptions);
             break;
         case NO_ERROR_CONTINUE_TO_LEVEL_TWO:
-            mainOptions = level_two(display, player, difficulty);
+            mainOptions = play_level(display, &player, difficulty, 2);
+            break;
+        case NO_ERROR_CONTINUE_TO_LEVEL_THREE:
+            mainOptions = play_level(display, &player, difficulty, 3);
+            break;
+        case FINISHED_GAME:
+            draw_win_screen();
+            printf("GANSTEEEE!!!!!!!!");
+            menuFlag = false;
             break;
         case BAD_ASSET:
             printf("Error en la carga de assets!");
