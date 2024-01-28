@@ -100,7 +100,6 @@ bool init_all_shields(shield_t shields[MAX_SHIELD_AMOUNT][MAX_SHIELD_HEIGHT][MAX
 }
 
 bool init_mothership(mothership_t* mothership) {
-    srand(time(NULL));
     mothership->bitmap = al_load_bitmap("sprites/mothership2.png");
     if (mothership->bitmap == NULL) {
         fprintf(stdout, "Failed to load mothership bitmap\n");

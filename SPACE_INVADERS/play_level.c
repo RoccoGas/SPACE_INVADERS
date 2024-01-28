@@ -176,7 +176,7 @@ enum LEVEL_OPTIONS_E  play_level(ALLEGRO_DISPLAY* display, player_t* player, int
             update_laser(player, &laser, enemy, &mostRightEnemy, &mostLeftEnemy, enemyLasers, shields, &mothership);
             update_mothership(&mothership);
             time++; // cada cuanto diapara
-            if ((time % 240) == 0) { // cada 4 segundos aumenta la dificultad
+            if ((time % (480 - 60* difficulty)) == 0) { // cada 6 segundos aumenta la dificultad "en easy" sube la dificultad cambia cada cuantos segundos aumenta
                 if (levelDifficulty < MAX_DIFFICULTY) {
                     printf("AMENTO LA DIFICULTAD!\n");
                     levelDifficulty++;
